@@ -4,10 +4,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace ai_for_games_lab_week_1
 {
-    public class MyGame: Game
+    public class MyGame : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private SpriteFont _font;
+        
 
         public MyGame()
         {
@@ -27,6 +29,9 @@ namespace ai_for_games_lab_week_1
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            _font = this.Content.Load<SpriteFont>("MyFont");
+
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -45,6 +50,12 @@ namespace ai_for_games_lab_week_1
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            _spriteBatch.Begin();
+            _spriteBatch.DrawString(_font, "Hello, World", new Vector2(100,100), Color.Black);
+            _spriteBatch.End();
+
+
 
             base.Draw(gameTime);
         }

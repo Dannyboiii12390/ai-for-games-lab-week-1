@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ai for games lab week 1", "ai for games lab week 1\ai for games lab week 1.csproj", "{BF4E33CE-9879-4A8E-9DF8-458E1A35D268}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGameLib", "MonoGameLib\MonoGameLib.csproj", "{12661EA7-D4F9-4FB5-B034-E9F7459AF454}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BF4E33CE-9879-4A8E-9DF8-458E1A35D268}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF4E33CE-9879-4A8E-9DF8-458E1A35D268}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF4E33CE-9879-4A8E-9DF8-458E1A35D268}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12661EA7-D4F9-4FB5-B034-E9F7459AF454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12661EA7-D4F9-4FB5-B034-E9F7459AF454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12661EA7-D4F9-4FB5-B034-E9F7459AF454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12661EA7-D4F9-4FB5-B034-E9F7459AF454}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
