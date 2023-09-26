@@ -55,6 +55,9 @@ namespace ai_for_games_lab_week_1
             _spriteBatch.DrawString(_font, "Hello, World", new Vector2(100,100), Color.Black);
             _spriteBatch.End();
 
+            _spriteBatch.Begin();
+
+            _spriteBatch.End();
 
 
             base.Draw(gameTime);
