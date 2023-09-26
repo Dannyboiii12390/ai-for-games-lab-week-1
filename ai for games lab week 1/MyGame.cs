@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameLib;
+using System.Runtime.CompilerServices;
 
 namespace ai_for_games_lab_week_1
 {
@@ -9,7 +11,8 @@ namespace ai_for_games_lab_week_1
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private SpriteFont _font;
-        
+        private ShapeBatcher _shapeBatcher;
+
 
         public MyGame()
         {
@@ -21,8 +24,12 @@ namespace ai_for_games_lab_week_1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            _shapeBatcher = new ShapeBatcher(this);
+
 
             base.Initialize();
+
+
         }
 
         protected override void LoadContent()
@@ -47,6 +54,8 @@ namespace ai_for_games_lab_week_1
 
         protected override void Draw(GameTime gameTime)
         {
+            Circle c1 = new Circle(300,400);
+            
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
@@ -55,9 +64,13 @@ namespace ai_for_games_lab_week_1
             _spriteBatch.DrawString(_font, "Hello, World", new Vector2(100,100), Color.Black);
             _spriteBatch.End();
 
-            _spriteBatch.Begin();
+            _shapeBatcher.Begin();
+            _shapeBatcher.DrawLine(new Vector2(20, 20), new Vector2(_graphics.GraphicsDevice.Viewport.Width - 20, _graphics.GraphicsDevice.Viewport.Height - 20), 5, Color.OrangeRed);
+            _shapeBatcher.DrawCircle(c1.position, 20, 16, 3, Color.DarkGreen);
+            
+            _shapeBatcher.End();
 
-            _spriteBatch.End();
+            
 
 
             base.Draw(gameTime);
