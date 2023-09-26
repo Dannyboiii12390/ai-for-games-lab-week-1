@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLib;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 
 namespace ai_for_games_lab_week_1
 {
@@ -12,6 +13,9 @@ namespace ai_for_games_lab_week_1
         private SpriteBatch _spriteBatch;
         private SpriteFont _font;
         private ShapeBatcher _shapeBatcher;
+        private Circle c1 = new Circle(300, 400);
+        private Circle c2 = new Circle(600, 250, 30);
+        
 
 
         public MyGame()
@@ -25,7 +29,7 @@ namespace ai_for_games_lab_week_1
         {
             // TODO: Add your initialization logic here
             _shapeBatcher = new ShapeBatcher(this);
-
+            c1.changeColour(Color.Blue);
 
             base.Initialize();
 
@@ -48,13 +52,28 @@ namespace ai_for_games_lab_week_1
                 Exit();
 
             // TODO: Add your update logic here
+            this.Draw(gameTime);
+
+            float seconds = gameTime.ElapsedGameTime.Milliseconds / 1000f;
+
+            c1.position += Vector2.Multiply(c1.velocity, seconds);
+
+            if (c1.position.X - c1._circleRadius < 0 || c1.position.X + c1._circleRadius > _graphics.GraphicsDevice.Viewport.Width)
+            {
+                c1.changeVelX(-c1.velocity.X);
+                
+            }
+
+            if (c1.position.Y - c1._circleRadius < 0 || c1.position.Y + c1._circleRadius > _graphics.GraphicsDevice.Viewport.Height)
+            {
+               c1.changeVelY(-c1.velocity.Y);
+            }
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
-        {
-            Circle c1 = new Circle(300,400);
+        { 
             
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
@@ -66,8 +85,11 @@ namespace ai_for_games_lab_week_1
 
             _shapeBatcher.Begin();
             _shapeBatcher.DrawLine(new Vector2(20, 20), new Vector2(_graphics.GraphicsDevice.Viewport.Width - 20, _graphics.GraphicsDevice.Viewport.Height - 20), 5, Color.OrangeRed);
-            _shapeBatcher.DrawCircle(c1.position, 20, 16, 3, Color.DarkGreen);
-            
+            _shapeBatcher.DrawCircle(c1.position, c1._circleRadius, 16, 3, Color.DarkGreen);
+            _shapeBatcher.DrawCircle(c2.position, c2._circleRadius, 16, 3, c2.colour);
+            _shapeBatcher.DrawArrow(c1.position, c1.velocity, 2, 10, Color.DarkSalmon);
+
+
             _shapeBatcher.End();
 
             
