@@ -14,4 +14,5 @@ namespace MonoGameLib
             return Vector2.DistanceSquared(pPoint, pCircle) < pRadius * pRadius;
         }
     }
+    
 }

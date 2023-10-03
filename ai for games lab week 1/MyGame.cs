@@ -18,6 +18,7 @@ namespace ai_for_games_lab_week_1
         private Circle c1 = new Circle(300, 400);
         private Circle c2 = new Circle(600, 250, 30);
         private ImGuiRenderer _guiRenderer;
+        private Agent _agent;
 
         
 
@@ -31,11 +32,13 @@ namespace ai_for_games_lab_week_1
 
         protected override void Initialize()
         {
+            
             // TODO: Add your initialization logic here
             _shapeBatcher = new ShapeBatcher(this);
             c1.changeColour(Color.Blue);
             _guiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
-
+            _agent = new Agent(new System.Numerics.Vector2(200, 200), new System.Numerics.Vector2(50, 50), 20);
+            
 
             base.Initialize();
 
@@ -75,6 +78,11 @@ namespace ai_for_games_lab_week_1
                c1.changeVelY(-c1.velocity.Y);
             }
 
+            
+            _agent.update(seconds);
+
+
+
             base.Update(gameTime);
         }
 
@@ -94,14 +102,15 @@ namespace ai_for_games_lab_week_1
             _shapeBatcher.DrawCircle(c1.position, c1._circleRadius, 16, 3, Color.DarkGreen);
             _shapeBatcher.DrawCircle(c2.position, c2._circleRadius, 16, 3, c2.colour);
             _shapeBatcher.DrawArrow(c1.position, c1.velocity, 2, 10, Color.DarkSalmon);
+            _shapeBatcher.Draw(_agent, Color.Red);
+            _shapeBatcher.DrawArrow(_agent.Position, _agent.Velocity, 2, 5, Color.Green);
             _shapeBatcher.End();
 
             _guiRenderer.BeginLayout(gameTime);
             ImGui.Begin("Debug Interface");
 
             //ImGui.SliderFloat("x", ref _cheesePosition.X, 0.0f, GraphicsDevice.Viewport.width, string.Empty);
-            //ImGui.SliderFloat("y", ref _cheesePosition.Y, 0.0f, GraphicsDevice.Viewport.height, string.Empty);
-
+            //ImGui.SliderFloat("y", ref _cheesePosition.Y, 0.0f, GraphicsDevice.Viewport.height, string.Empty)
 
             ImGui.End();
             _guiRenderer.EndLayout();
