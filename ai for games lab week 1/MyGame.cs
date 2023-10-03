@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameLib;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using MonoGame.ImGui;
+using ImGuiNET;
 
 namespace ai_for_games_lab_week_1
 {
@@ -15,6 +17,8 @@ namespace ai_for_games_lab_week_1
         private ShapeBatcher _shapeBatcher;
         private Circle c1 = new Circle(300, 400);
         private Circle c2 = new Circle(600, 250, 30);
+        private ImGuiRenderer _guiRenderer;
+
         
 
 
@@ -30,6 +34,8 @@ namespace ai_for_games_lab_week_1
             // TODO: Add your initialization logic here
             _shapeBatcher = new ShapeBatcher(this);
             c1.changeColour(Color.Blue);
+            _guiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
+
 
             base.Initialize();
 
@@ -88,9 +94,17 @@ namespace ai_for_games_lab_week_1
             _shapeBatcher.DrawCircle(c1.position, c1._circleRadius, 16, 3, Color.DarkGreen);
             _shapeBatcher.DrawCircle(c2.position, c2._circleRadius, 16, 3, c2.colour);
             _shapeBatcher.DrawArrow(c1.position, c1.velocity, 2, 10, Color.DarkSalmon);
-
-
             _shapeBatcher.End();
+
+            _guiRenderer.BeginLayout(gameTime);
+            ImGui.Begin("Debug Interface");
+
+            //ImGui.SliderFloat("x", ref _cheesePosition.X, 0.0f, GraphicsDevice.Viewport.width, string.Empty);
+            //ImGui.SliderFloat("y", ref _cheesePosition.Y, 0.0f, GraphicsDevice.Viewport.height, string.Empty);
+
+
+            ImGui.End();
+            _guiRenderer.EndLayout();
 
             
 
