@@ -19,6 +19,8 @@ namespace ai_for_games_lab_week_1
         private Circle c2 = new Circle(600, 250, 30);
         private ImGuiRenderer _guiRenderer;
         private Agent _agent;
+        private bool _simulating = false;
+
 
         
 
@@ -77,9 +79,13 @@ namespace ai_for_games_lab_week_1
             {
                c1.changeVelY(-c1.velocity.Y);
             }
-
+            if (_simulating)
+            {
+                _agent.update(seconds);
+            }
             
-            _agent.update(seconds);
+            
+            //_agent.update(seconds);
 
 
 
@@ -111,9 +117,27 @@ namespace ai_for_games_lab_week_1
 
             //ImGui.SliderFloat("x", ref _cheesePosition.X, 0.0f, GraphicsDevice.Viewport.width, string.Empty);
             //ImGui.SliderFloat("y", ref _cheesePosition.Y, 0.0f, GraphicsDevice.Viewport.height, string.Empty)
+            
+            if (_simulating)
+            {
+                if (ImGui.Button("Stop"))
+                {
+                    _simulating = false;
+                }
+
+            }
+            else
+            {
+                if (ImGui.Button("Start"))
+                {
+                    _simulating = true;
+                }
+            }
 
             ImGui.End();
             _guiRenderer.EndLayout();
+
+            _agent.RenderGui();
 
             
 
