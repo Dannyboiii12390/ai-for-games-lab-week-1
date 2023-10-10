@@ -2,12 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLib;
-
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using MonoGame.ImGui;
 using ImGuiNET;
 using System;
+using MonoGameLib.Shapes;
 
 namespace ai_for_games_lab_week_1
 {
@@ -24,8 +24,11 @@ namespace ai_for_games_lab_week_1
         private bool _simulating = false;
         private Circle MouseCircle = new Circle(50,50);
         private bool inside;
+        private int _windowWidth;
+        private int _windowHeight;
+        private Text text;
+        private Line line;
 
-        
 
 
         public MyGame()
@@ -44,6 +47,13 @@ namespace ai_for_games_lab_week_1
             _guiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
             _agent = new Agent(new System.Numerics.Vector2(200, 200), new System.Numerics.Vector2(50, 50), 20);
             MouseCircle.changeColour(Color.GreenYellow);
+
+            _windowWidth = _graphics.GraphicsDevice.Viewport.Width;
+            _windowHeight = _graphics.GraphicsDevice.Viewport.Height;
+
+            text = new Text("Hello World", new Vector2(100, 100), Color.White);
+            line = new Line(new Vector2(20, 20), new Vector2(_windowWidth - 20, _windowHeight - 20), Color.AliceBlue, 5 );
+
 
             base.Initialize();
 
@@ -70,17 +80,18 @@ namespace ai_for_games_lab_week_1
 
             float seconds = gameTime.ElapsedGameTime.Milliseconds / 1000f;
 
-            c1.position += Vector2.Multiply(c1.velocity, seconds);
+            c1.position += Vector2.Multiply(c1._velocity, seconds);
 
             if (c1.position.X - c1._radius < 0 || c1.position.X + c1._radius > _graphics.GraphicsDevice.Viewport.Width)
             {
-                c1.changeVelX(-c1.velocity.X);
+                
+                c1.changeVelX(-c1._velocity.X);
                 
             }
 
             if (c1.position.Y - c1._radius < 0 || c1.position.Y + c1._radius > _graphics.GraphicsDevice.Viewport.Height)
             {
-               c1.changeVelY(-c1.velocity.Y);
+               c1.changeVelY(-c1._velocity.Y);
             }
             if (_simulating)
             {
@@ -112,19 +123,17 @@ namespace ai_for_games_lab_week_1
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
-            _spriteBatch.DrawString(_font, "Hello, World", new Vector2(100,100), Color.Black);
+            _spriteBatch.DrawString(_font, text.text, text.position, text._colour);
             _spriteBatch.End();
 
-            _shapeBatcher.Begin();
-            _shapeBatcher.DrawLine(new Vector2(20, 20), new Vector2(_graphics.GraphicsDevice.Viewport.Width - 20, _graphics.GraphicsDevice.Viewport.Height - 20), 5, Color.OrangeRed);
-            _shapeBatcher.DrawCircle(c1.position, c1._radius, 16, 3, Color.DarkGreen);
-            _shapeBatcher.DrawCircle(c2.position, c2._radius, 16, 3, c2._colour);
-            _shapeBatcher.DrawArrow(c1.position, c1.velocity, 2, 10, Color.DarkSalmon);
-            _shapeBatcher.Draw(_agent, Color.Red);
-            _shapeBatcher.DrawArrow(_agent.Position, _agent.Velocity, 2, 5, Color.Green);
-            _shapeBatcher.DrawCircle(MouseCircle._position, MouseCircle._radius, 16, 3, MouseCircle._colour);
-            _shapeBatcher.End();
-
+            _shapeBatcher.HelperDrawLine(line);
+            _shapeBatcher.HelperDraw(c1);
+            _shapeBatcher.HelperDraw(c2);
+            _shapeBatcher.HelperDrawArrow(c1);
+            _shapeBatcher.HelperDraw(_agent, Color.Red);
+            _shapeBatcher.HelperDrawArrow(_agent, Color.Green);
+            _shapeBatcher.HelperDraw(MouseCircle);
+            
             _guiRenderer.BeginLayout(gameTime);
             ImGui.Begin("Debug Interface");
 

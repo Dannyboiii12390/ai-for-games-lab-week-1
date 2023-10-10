@@ -11,16 +11,17 @@ namespace ai_for_games_lab_week_1.Shapes
 {
     public abstract class Shape
     {
+
         public Vector2 _position { get; protected set; }
+        public Vector2 _velocity { get; protected set; }
         public Microsoft.Xna.Framework.Color _colour { get; protected set; }
-
         
-
 
         public Shape(Vector2 pPosition, Microsoft.Xna.Framework.Color pColour)
         {
             _position = pPosition;
             _colour = pColour;
+            
 
         }
         public abstract bool isInside(Vector2 pPosition);
@@ -33,19 +34,17 @@ namespace ai_for_games_lab_week_1.Shapes
         {
             return $"Shape with position {_position.ToString()}";
         }
-
+        public void changeVelX(float velX)
+        {
+            _velocity = new Vector2 (velX, _velocity.Y);
+        }
+        public void changeVelY(float velY)
+        {
+            _velocity = new Vector2(_velocity.X, velY);
+        }
+        
+        
     }
 
-    public interface IcanMove
-    {
-        Vector2 velocity { get; set; }
-        public void changeVelX(float v)
-        {
-            velocity = new Vector2(v, velocity.Y);
-        }
-        public void changeVelY(float v)
-        {
-            velocity = new Vector2(velocity.X, v);
-        }
-    }
+    
 }
