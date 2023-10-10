@@ -2,10 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLib;
+
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using MonoGame.ImGui;
 using ImGuiNET;
+using System;
 
 namespace ai_for_games_lab_week_1
 {
@@ -15,12 +17,13 @@ namespace ai_for_games_lab_week_1
         private SpriteBatch _spriteBatch;
         private SpriteFont _font;
         private ShapeBatcher _shapeBatcher;
-        private Circle c1 = new Circle(300, 400);
-        private Circle c2 = new Circle(600, 250, 30);
+        private Circle c1 = new Circle(100,200);
+        private Circle c2 = new Circle(0, 0, 30);
         private ImGuiRenderer _guiRenderer;
         private Agent _agent;
         private bool _simulating = false;
-
+        private Circle MouseCircle = new Circle(50,50);
+        private bool inside;
 
         
 
@@ -40,7 +43,7 @@ namespace ai_for_games_lab_week_1
             c1.changeColour(Color.Blue);
             _guiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
             _agent = new Agent(new System.Numerics.Vector2(200, 200), new System.Numerics.Vector2(50, 50), 20);
-            
+            MouseCircle.changeColour(Color.GreenYellow);
 
             base.Initialize();
 
@@ -69,13 +72,13 @@ namespace ai_for_games_lab_week_1
 
             c1.position += Vector2.Multiply(c1.velocity, seconds);
 
-            if (c1.position.X - c1._circleRadius < 0 || c1.position.X + c1._circleRadius > _graphics.GraphicsDevice.Viewport.Width)
+            if (c1.position.X - c1._radius < 0 || c1.position.X + c1._radius > _graphics.GraphicsDevice.Viewport.Width)
             {
                 c1.changeVelX(-c1.velocity.X);
                 
             }
 
-            if (c1.position.Y - c1._circleRadius < 0 || c1.position.Y + c1._circleRadius > _graphics.GraphicsDevice.Viewport.Height)
+            if (c1.position.Y - c1._radius < 0 || c1.position.Y + c1._radius > _graphics.GraphicsDevice.Viewport.Height)
             {
                c1.changeVelY(-c1.velocity.Y);
             }
@@ -83,7 +86,16 @@ namespace ai_for_games_lab_week_1
             {
                 _agent.update(seconds);
             }
+
+            Vector2 mousePosition = Mouse.GetState().Position.FlipY(_graphics.GraphicsDevice.Viewport.Height);
+            this.inside = MouseCircle.isInside(mousePosition);
             
+                
+            
+
+
+            
+            //if ()
             
             //_agent.update(seconds);
 
@@ -105,11 +117,12 @@ namespace ai_for_games_lab_week_1
 
             _shapeBatcher.Begin();
             _shapeBatcher.DrawLine(new Vector2(20, 20), new Vector2(_graphics.GraphicsDevice.Viewport.Width - 20, _graphics.GraphicsDevice.Viewport.Height - 20), 5, Color.OrangeRed);
-            _shapeBatcher.DrawCircle(c1.position, c1._circleRadius, 16, 3, Color.DarkGreen);
-            _shapeBatcher.DrawCircle(c2.position, c2._circleRadius, 16, 3, c2.colour);
+            _shapeBatcher.DrawCircle(c1.position, c1._radius, 16, 3, Color.DarkGreen);
+            _shapeBatcher.DrawCircle(c2.position, c2._radius, 16, 3, c2._colour);
             _shapeBatcher.DrawArrow(c1.position, c1.velocity, 2, 10, Color.DarkSalmon);
             _shapeBatcher.Draw(_agent, Color.Red);
             _shapeBatcher.DrawArrow(_agent.Position, _agent.Velocity, 2, 5, Color.Green);
+            _shapeBatcher.DrawCircle(MouseCircle._position, MouseCircle._radius, 16, 3, MouseCircle._colour);
             _shapeBatcher.End();
 
             _guiRenderer.BeginLayout(gameTime);
@@ -133,11 +146,19 @@ namespace ai_for_games_lab_week_1
                     _simulating = true;
                 }
             }
-
+            _agent.RenderGui();
             ImGui.End();
+            ImGui.Begin("is inside");
+            ImGui.Button(inside.ToString());
+            ImGui.End();
+
+
+
+
+
             _guiRenderer.EndLayout();
 
-            _agent.RenderGui();
+            
 
             
 
