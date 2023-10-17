@@ -8,6 +8,7 @@ using MonoGame.ImGui;
 using ImGuiNET;
 using System;
 using MonoGameLib.Shapes;
+using System.Collections.Generic;
 
 namespace ai_for_games_lab_week_1
 {
@@ -33,6 +34,13 @@ namespace ai_for_games_lab_week_1
         private MonoGameLib.Shapes.Triangle triangle = new MonoGameLib.Shapes.Triangle(new Vector2(200, 200), new Vector2(250, 250), new Vector2(300, 200), Color.Cyan);
         private bool triangleInside;
 
+
+        private List<Vector2> list;
+
+
+        private Polygon polygon;
+        private bool polyInside;
+
         public MyGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -55,6 +63,16 @@ namespace ai_for_games_lab_week_1
 
             text = new Text("Hello World", new Vector2(100, 100), Color.White);
             line = new Line(new Vector2(20, 20), new Vector2(_windowWidth - 20, _windowHeight - 20), Color.AliceBlue, 5 );
+
+            list = new List<Vector2>();
+            list.Add(new Vector2(250, 250));
+            list.Add(new Vector2(250, 300));
+            list.Add(new Vector2(300, 300));
+            list.Add(new Vector2(300, 250));
+             
+            polygon = new Polygon(new Vector2(250,250), list, Color.White);
+
+
 
 
             base.Initialize();
@@ -104,6 +122,7 @@ namespace ai_for_games_lab_week_1
             this.circInside = MouseCircle.isInside(mousePosition);
             //this.rectInside = rect.isInside(mousePosition);
             this.triangleInside = triangle.isInside(mousePosition);
+            this.polyInside = polygon.isInside(mousePosition);
             
                 
             
@@ -130,14 +149,15 @@ namespace ai_for_games_lab_week_1
             _spriteBatch.DrawString(_font, text.text, text.position, text._colour);
             _spriteBatch.End();
 
-            _shapeBatcher.HelperDrawLine(line);
-            _shapeBatcher.HelperDraw(c1);
-            _shapeBatcher.HelperDraw(c2);
+            _shapeBatcher.Draw(line);
+            _shapeBatcher.Draw(c1);
+            _shapeBatcher.Draw(c2);
             _shapeBatcher.HelperDrawArrow(c1);
             _shapeBatcher.HelperDraw(_agent, Color.Red);
             _shapeBatcher.HelperDrawArrow(_agent, Color.Green);
-            _shapeBatcher.HelperDraw(MouseCircle);
-            _shapeBatcher.HelperDrawTriangle(triangle);
+            _shapeBatcher.Draw(MouseCircle);
+            _shapeBatcher.Draw(triangle);
+            _shapeBatcher.Draw(polygon);
             
             _guiRenderer.BeginLayout(gameTime);
             ImGui.Begin("Debug Interface");
@@ -165,6 +185,7 @@ namespace ai_for_games_lab_week_1
             ImGui.Begin("is inside");
             ImGui.Button(circInside.ToString());
             ImGui.Button(triangleInside.ToString());
+            ImGui.Button(polyInside.ToString());
             ImGui.End();
 
 

@@ -15,13 +15,40 @@ namespace ai_for_games_lab_week_1
 {
     internal static class ShapebatcherHelpers
     {
+
+        public static void Draw(this ShapeBatcher shapeBatcher, Shape shape)
+        {
+            switch (shape)
+            {
+                case Circle circle:
+                    shapeBatcher.HelperDraw(shape as Circle);
+                    break;
+                
+                case Triangle triangle:
+                    shapeBatcher.HelperDrawTriangle(shape as Triangle);
+                    break;
+
+                case Line line:
+                    shapeBatcher.HelperDrawLine(shape as Line);
+                    break;
+                case Polygon polygon:
+                    shapeBatcher.HelperDrawPolygon(shape as Polygon);
+                    break;
+
+
+
+                default:
+                    break;
+            }
+        }
+
         public static void HelperDraw(this ShapeBatcher shapeBatcher, Agent agent, Color colour)
         {
             shapeBatcher.Begin();
             shapeBatcher.DrawCircle(agent.Position, agent.Radius, 100, 2, colour);
             shapeBatcher.End();
         }
-        public static void HelperDraw(this ShapeBatcher shapeBatcher, Circle circle)
+        private static void HelperDraw(this ShapeBatcher shapeBatcher, Circle circle)
         {
             shapeBatcher.Begin();
             shapeBatcher.DrawCircle(circle._position, circle._radius, circle.numVertices, circle.thickness, circle._colour);
@@ -41,13 +68,13 @@ namespace ai_for_games_lab_week_1
             shapeBatcher.End();
 
         }
-        public static void HelperDrawLine(this ShapeBatcher shapeBatcher, Line line)
+        private static void HelperDrawLine(this ShapeBatcher shapeBatcher, Line line)
         {
             shapeBatcher.Begin();
             shapeBatcher.DrawLine(line._position, line.end, line.thickness, line._colour);
             shapeBatcher.End();
         }
-        public static void HelperDrawTriangle(this ShapeBatcher shapeBatcher, MonoGameLib.Shapes.Triangle triangle)
+        private static void HelperDrawTriangle(this ShapeBatcher shapeBatcher, MonoGameLib.Shapes.Triangle triangle)
         {
             shapeBatcher.Begin();
             shapeBatcher.DrawLine(triangle._position, triangle._position2, 2, triangle._colour);
@@ -57,6 +84,15 @@ namespace ai_for_games_lab_week_1
 
         }
 
+        private static void HelperDrawPolygon(this ShapeBatcher shapeBatcher, MonoGameLib.Shapes.Polygon polygon)
+        {
+            foreach(Triangle triangle in polygon.triangles)
+            {
+                
+                shapeBatcher.HelperDrawTriangle(triangle);
+               
+            }
+        }
     }
             
 }
