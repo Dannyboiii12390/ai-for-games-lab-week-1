@@ -47,10 +47,12 @@ namespace ai_for_games_lab_week_1
             shapeBatcher.DrawLine(line._position, line.end, line.thickness, line._colour);
             shapeBatcher.End();
         }
-        public static void HelperDrawRect(this ShapeBatcher shapeBatcher, MonoGameLib.Shapes.Rectangle rect)
+        public static void HelperDrawTriangle(this ShapeBatcher shapeBatcher, MonoGameLib.Shapes.Triangle triangle)
         {
             shapeBatcher.Begin();
-            //shapeBatcher.DrawLine(rect._position, new Vector2(rect._position.X + rect.width, rect._position.Y + rect.height), 30 * rect.width, rect._colour);
+            shapeBatcher.DrawLine(triangle._position, triangle._position2, 2, triangle._colour);
+            shapeBatcher.DrawLine(triangle._position2, triangle._position3, 2, triangle._colour);
+            shapeBatcher.DrawLine(triangle._position, triangle._position3, 2, triangle._colour);
             shapeBatcher.End();
 
         }

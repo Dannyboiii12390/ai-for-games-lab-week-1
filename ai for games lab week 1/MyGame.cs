@@ -30,8 +30,8 @@ namespace ai_for_games_lab_week_1
         private Line line;
         private bool rectInside;
         private MonoGameLib.Shapes.Rectangle rect = new MonoGameLib.Shapes.Rectangle(new Vector2(200,200),50,50,Color.DarkOrange);
-
-
+        private MonoGameLib.Shapes.Triangle triangle = new MonoGameLib.Shapes.Triangle(new Vector2(200, 200), new Vector2(250, 250), new Vector2(300, 200), Color.Cyan);
+        private bool triangleInside;
 
         public MyGame()
         {
@@ -103,7 +103,7 @@ namespace ai_for_games_lab_week_1
             Vector2 mousePosition = Mouse.GetState().Position.FlipY(_graphics.GraphicsDevice.Viewport.Height);
             this.circInside = MouseCircle.isInside(mousePosition);
             //this.rectInside = rect.isInside(mousePosition);
-            
+            this.triangleInside = triangle.isInside(mousePosition);
             
                 
             
@@ -137,7 +137,7 @@ namespace ai_for_games_lab_week_1
             _shapeBatcher.HelperDraw(_agent, Color.Red);
             _shapeBatcher.HelperDrawArrow(_agent, Color.Green);
             _shapeBatcher.HelperDraw(MouseCircle);
-            _shapeBatcher.HelperDrawRect(rect);
+            _shapeBatcher.HelperDrawTriangle(triangle);
             
             _guiRenderer.BeginLayout(gameTime);
             ImGui.Begin("Debug Interface");
@@ -164,7 +164,7 @@ namespace ai_for_games_lab_week_1
             ImGui.End();
             ImGui.Begin("is inside");
             ImGui.Button(circInside.ToString());
-            //ImGui.Button(rectInside.ToString());
+            ImGui.Button(triangleInside.ToString());
             ImGui.End();
 
 
