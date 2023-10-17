@@ -1,4 +1,4 @@
-﻿using ai_for_games_lab_week_1.Shapes;
+﻿
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -27,15 +27,20 @@ namespace MonoGameLib.Shapes
 
         public override bool isInside(Vector2 pPosition)
         {
-            if (!(pPosition.X < _position.X + width && pPosition.X > _position.X) )
-            {
-                return false;
-            }
-            if (!(pPosition.Y < _position.Y + height && pPosition.Y > _position.Y))
-            {
-                return false;
-            }
-            return true;
+
+
+            throw new NotImplementedException();
+            
+            
+            //if (!(pPosition.X < _position.X + width && pPosition.X > _position.X) )
+            //{
+            //    return false;
+            //}
+            //if (!(pPosition.Y < _position.Y + height && pPosition.Y > _position.Y))
+            //{
+            //    return false;
+            //}
+            //return true;
         }
     }
 }

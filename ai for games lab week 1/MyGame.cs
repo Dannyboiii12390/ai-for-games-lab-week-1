@@ -23,11 +23,13 @@ namespace ai_for_games_lab_week_1
         private Agent _agent;
         private bool _simulating = false;
         private Circle MouseCircle = new Circle(50,50);
-        private bool inside;
+        private bool circInside;
         private int _windowWidth;
         private int _windowHeight;
         private Text text;
         private Line line;
+        private bool rectInside;
+        private MonoGameLib.Shapes.Rectangle rect = new MonoGameLib.Shapes.Rectangle(new Vector2(200,200),50,50,Color.DarkOrange);
 
 
 
@@ -99,7 +101,9 @@ namespace ai_for_games_lab_week_1
             }
 
             Vector2 mousePosition = Mouse.GetState().Position.FlipY(_graphics.GraphicsDevice.Viewport.Height);
-            this.inside = MouseCircle.isInside(mousePosition);
+            this.circInside = MouseCircle.isInside(mousePosition);
+            //this.rectInside = rect.isInside(mousePosition);
+            
             
                 
             
@@ -133,6 +137,7 @@ namespace ai_for_games_lab_week_1
             _shapeBatcher.HelperDraw(_agent, Color.Red);
             _shapeBatcher.HelperDrawArrow(_agent, Color.Green);
             _shapeBatcher.HelperDraw(MouseCircle);
+            _shapeBatcher.HelperDrawRect(rect);
             
             _guiRenderer.BeginLayout(gameTime);
             ImGui.Begin("Debug Interface");
@@ -158,7 +163,8 @@ namespace ai_for_games_lab_week_1
             _agent.RenderGui();
             ImGui.End();
             ImGui.Begin("is inside");
-            ImGui.Button(inside.ToString());
+            ImGui.Button(circInside.ToString());
+            //ImGui.Button(rectInside.ToString());
             ImGui.End();
 
 

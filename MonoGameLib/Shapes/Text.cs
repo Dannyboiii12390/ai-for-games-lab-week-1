@@ -1,4 +1,4 @@
-﻿using ai_for_games_lab_week_1.Shapes;
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

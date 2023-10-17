@@ -1,12 +1,12 @@
 ﻿
-using ai_for_games_lab_week_1.Shapes;
+
 using Microsoft.Xna.Framework;
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
 
-namespace MonoGameLib
+namespace MonoGameLib.Shapes
 {
     public class Circle : Shape
     {
