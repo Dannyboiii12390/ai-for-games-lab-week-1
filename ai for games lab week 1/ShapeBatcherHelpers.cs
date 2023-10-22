@@ -42,12 +42,6 @@ namespace ai_for_games_lab_week_1
             }
         }
 
-        public static void HelperDraw(this ShapeBatcher shapeBatcher, Agent agent, Color colour)
-        {
-            shapeBatcher.Begin();
-            shapeBatcher.DrawCircle(agent.Position, agent.Radius, 100, 2, colour);
-            shapeBatcher.End();
-        }
         private static void HelperDraw(this ShapeBatcher shapeBatcher, Circle circle)
         {
             shapeBatcher.Begin();
@@ -61,13 +55,7 @@ namespace ai_for_games_lab_week_1
             shapeBatcher.DrawArrow(circle.position, circle._velocity, 2, 10, circle._colour);
             shapeBatcher.End();
         }
-        public static void HelperDrawArrow(this ShapeBatcher shapeBatcher, Agent agent, Color colour)
-        {
-            shapeBatcher.Begin();
-            shapeBatcher.DrawArrow(agent.Position, agent.Velocity, 2, 5, colour);
-            shapeBatcher.End();
 
-        }
         private static void HelperDrawLine(this ShapeBatcher shapeBatcher, Line line)
         {
             shapeBatcher.Begin();
@@ -86,12 +74,16 @@ namespace ai_for_games_lab_week_1
 
         private static void HelperDrawPolygon(this ShapeBatcher shapeBatcher, MonoGameLib.Shapes.Polygon polygon)
         {
+            shapeBatcher.Begin();
             foreach(Triangle triangle in polygon.triangles)
             {
                 
-                shapeBatcher.HelperDrawTriangle(triangle);
-               
+                shapeBatcher.DrawLine(triangle._position, triangle._position2, 2, polygon._colour);
+                shapeBatcher.DrawLine(triangle._position2, triangle._position3, 2, polygon._colour);
+                shapeBatcher.DrawLine(triangle._position3, triangle._position, 2, polygon._colour);
+                
             }
+            shapeBatcher.End();
         }
     }
             

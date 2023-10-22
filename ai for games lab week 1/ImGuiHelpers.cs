@@ -12,14 +12,6 @@ namespace ai_for_games_lab_week_1
 {
     internal static class ImGuiHelpers
     {
-        public static void RenderGui(this Agent agent)
-        {
-            System.Numerics.Vector2 v = agent.Velocity.ToNumerics();
-
-            if (ImGui.InputFloat2("velocity", ref v))
-            {
-                agent.Velocity = v;
-            }
-        }
+        
     }
 }

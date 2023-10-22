@@ -16,13 +16,13 @@ namespace MonoGameLib.Shapes
         public int thickness { get; private set; } = 2;
 
 
-
-        public Circle(int px, int py, float pRad = 20f) : base (new Vector2(px, py), Color.Red)
+   
+        public Circle(Vector2 position, float radius, Color pColour) : base(position, pColour)
         {
-            _radius = pRad;
+            _radius=radius;
+        }
+       
 
-        }   
-        
         public override string ToString()
         {
             return $"Circle with position {position.ToString()}";
@@ -32,7 +32,7 @@ namespace MonoGameLib.Shapes
         {
             float dx = (_position.X - pPosition.X);
             float dy = (_position.Y - pPosition.Y);
-            if ((dx * dx + dy * dy) < _radius*_radius)
+            if ((dx * dx + dy * dy) <= _radius*_radius)
             {
                 return true;
             }

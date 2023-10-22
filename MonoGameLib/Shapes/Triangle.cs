@@ -32,7 +32,7 @@ namespace MonoGameLib.Shapes
             float n = (Py * V1x - Px * V1y) / (V2y * V1x - V2x * V1y);
             float m = (Px - n * V2x) / V1x;
 
-            return m > 0 && m < 1 && n > 0 && n < 1 && m + n < 1;
+            return m >= 0 && m <= 1 && n >= 0 && n <= 1 && m + n <= 1;
         }
     }
 }
