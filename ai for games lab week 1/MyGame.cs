@@ -20,9 +20,11 @@ namespace ai_for_games_lab_week_1
 
 
 
+
         //shapes
         private Circle _mouseCircle;
         private Circle _followingCircle;
+        private Line _betweenMouseAndFollower;
 
 
         public MyGame()
@@ -41,6 +43,7 @@ namespace ai_for_games_lab_week_1
 
             _mouseCircle = new Circle(new Vector2(screenWidth/2, screenHeight/2), 30, Color.BlueViolet);
             _followingCircle = new Circle(new Vector2(screenWidth / 2 - 50, screenHeight / 2 - 50), 30, Color.Red);
+            _betweenMouseAndFollower = new Line(_mouseCircle._position, _followingCircle._position, Color.Green, 5);
 
            
             _shapeBatcher = new ShapeBatcher(this);
@@ -69,8 +72,9 @@ namespace ai_for_games_lab_week_1
 
             _followingCircle.updateVel(mousePosition);
             _followingCircle.seek();
+            _betweenMouseAndFollower = new Line(_mouseCircle._position,_followingCircle._position, _betweenMouseAndFollower._colour, _betweenMouseAndFollower.thickness);
 
-
+            
 
 
 
@@ -84,6 +88,7 @@ namespace ai_for_games_lab_week_1
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _shapeBatcher.Draw(_mouseCircle);
             _shapeBatcher.Draw(_followingCircle);
+            _shapeBatcher.Draw(_betweenMouseAndFollower);
 
 
 
@@ -93,5 +98,6 @@ namespace ai_for_games_lab_week_1
             // TODO: Add your drawing code here
             base.Draw(gameTime);
         }
+        
     }
 }

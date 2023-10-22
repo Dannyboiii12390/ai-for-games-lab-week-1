@@ -8,12 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MonoGameLib.Shapes
-{
+{   
+
     public abstract class Shape
     {
-
+        
         public Vector2 _position { get; protected set; }
         public Vector2 _velocity { get; protected set; }
+
+
 
         private float coefficientOfSpeed = 0.015f;
         public Microsoft.Xna.Framework.Color _colour { get; protected set; }
@@ -23,6 +26,7 @@ namespace MonoGameLib.Shapes
         {
             _position = pPosition;
             _colour = pColour;
+            
             
 
         }
@@ -44,32 +48,37 @@ namespace MonoGameLib.Shapes
 
         public void updateVel(Vector2 pTarget)
         {
+
+
             //difference
             Vector2 v = _position - pTarget;
 
             //normalise
             v = Vector2.Normalize(v);
 
-            //get length between
-
-
-
             //multiply by length between
-            
-            _velocity = v *getLengthBetween(pTarget)*coefficientOfSpeed;
-        }
-        public void seek()
-        {
-            _position = _position - _velocity;
-        }
 
-        public float getLengthBetween(Vector2 pTarget)
+            
+            _velocity = v * getLengthBetween(pTarget) * coefficientOfSpeed;
+           
+            
+        }
+        
+        private float getLengthBetween(Vector2 pTarget)
         {
             Vector2 delV = _position - pTarget;
             float len = delV.Length();
 
             return len;
         }
+        public void seek()
+        {
+            _position = _position - _velocity;
+        }
+        
+
+
+
         
         
     }

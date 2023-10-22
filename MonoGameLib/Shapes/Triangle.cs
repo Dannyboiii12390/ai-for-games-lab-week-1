@@ -34,5 +34,7 @@ namespace MonoGameLib.Shapes
 
             return m >= 0 && m <= 1 && n >= 0 && n <= 1 && m + n <= 1;
         }
+
+        
     }
 }
