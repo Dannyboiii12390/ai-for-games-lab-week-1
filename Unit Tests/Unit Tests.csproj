@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ai for games lab week 1\game.csproj" />
+    <ProjectReference Include="..\ai Game\ai Game.csproj" />
     <ProjectReference Include="..\MonoGameLib\MonoGameLib.csproj" />
   </ItemGroup>
 

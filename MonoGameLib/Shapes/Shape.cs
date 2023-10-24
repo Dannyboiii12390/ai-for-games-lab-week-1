@@ -18,7 +18,7 @@ namespace MonoGameLib.Shapes
 
 
 
-        private float coefficientOfSpeed = 0.015f;
+        protected float coefficientOfSpeed = 0.015f;
         public Microsoft.Xna.Framework.Color _colour { get; protected set; }
         
 
@@ -46,7 +46,7 @@ namespace MonoGameLib.Shapes
             _velocity = v;
         }
 
-        public void updateVel(Vector2 pTarget)
+        public virtual void updateVel(Vector2 pTarget)
         {
 
 
