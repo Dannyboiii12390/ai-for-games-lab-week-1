@@ -53,7 +53,7 @@ namespace ai_Game.Helpers
         public static void HelperDrawArrow(this ShapeBatcher shapeBatcher, Circle circle)
         {
             shapeBatcher.Begin();
-            shapeBatcher.DrawArrow(circle.position, circle._velocity, 2, 10, circle._colour);
+            shapeBatcher.DrawArrow(circle._position, circle._velocity, 2, 10, circle._colour);
             shapeBatcher.End();
         }
 

@@ -26,6 +26,11 @@ namespace MonoGameLib.Shapes
             throw new NotImplementedException();
         }
 
+        public void SetEnd(Vector2 v)
+        {
+            end = v;
+        }
+
         
     }
 }

@@ -40,7 +40,11 @@ namespace MonoGameLib.Shapes
         {
             return $"Shape with position {_position.ToString()}";
         }
-        
+        public void changePosition(Vector2 pPos)
+        {
+            _position = pPos;
+        }
+
         public void changeVelocity(Vector2 v)
         {
             _velocity = v;
@@ -71,9 +75,11 @@ namespace MonoGameLib.Shapes
 
             return len;
         }
-        public void seek()
+        public virtual void seek()
         {
+            
             _position = _position - _velocity;
+            
         }
         
 
