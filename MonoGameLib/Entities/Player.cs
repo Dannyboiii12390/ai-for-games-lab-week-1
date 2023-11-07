@@ -1,4 +1,6 @@
-﻿using MonoGameLib.Shapes;
+﻿using MonoGameLib;
+using MonoGameLib.Items;
+using MonoGameLib.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

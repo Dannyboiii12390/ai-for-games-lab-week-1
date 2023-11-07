@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoGameLib.Shapes;
 
-namespace MonoGameLib.Shapes
+namespace MonoGameLib.Items
 {
     public class Bullet : Shape
     {
