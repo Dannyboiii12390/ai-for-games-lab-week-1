@@ -20,7 +20,7 @@ jobs:
          dotnet-version: '6.0.x'
 
     -  name: Install Test Platform
-       working-directory: ${{github.workspace}}/Solution
+       working-directory: ${{github.workspace}}/ai Game
        run: dotnet add package Microsoft.TestPlatform --version 17.5.0
 
     -  name: Dependency Restore
