@@ -33,6 +33,11 @@ namespace MonoGameLib
             Health -= pDamage;
         }
 
+        public float GetHealthAsDecimal()
+        {
+            return (Health / MaxHealth);
+        }
+
 
     }
 }

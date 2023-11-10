@@ -11,6 +11,8 @@ using Color = Microsoft.Xna.Framework.Color;
 using ImGuiNET;
 using MonoGameLib.Shapes;
 using ai_for_games_lab_week_1;
+using MonoGameLib.Items;
+using System.Runtime.CompilerServices;
 
 namespace ai_Game.Helpers
 {
@@ -86,6 +88,17 @@ namespace ai_Game.Helpers
             }
             shapeBatcher.End();
         }
+
+        public static void Draw(this ShapeBatcher shapeBatcher, HealthBar bar)
+        {
+            ShapebatcherHelpers.HelperDrawLine(shapeBatcher, bar.bar);
+
+        }
+
+
+
+
+
     }
 
 }

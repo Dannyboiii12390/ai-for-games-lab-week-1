@@ -25,10 +25,5 @@ namespace MonoGameLib.Entities
 
         }
 
-        public float GetHealthAsDecimal()
-        {
-            return (Health / MaxHealth);
-        }
-        
     }
 }
