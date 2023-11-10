@@ -25,6 +25,12 @@ namespace MonoGameLib.Utilities
 
         public int NodeCount { get { return nodes.Count; } }
 
+
+        public void AddNode(Node<T> node)
+        {
+            nodes.Add(node);
+        }
+
         public void AddEdge(int pFromID, int pToID)
         {
             bool from = false;
