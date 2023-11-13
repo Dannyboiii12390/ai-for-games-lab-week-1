@@ -13,6 +13,7 @@ using MonoGameLib.Shapes;
 using ai_for_games_lab_week_1;
 using MonoGameLib.Items;
 using System.Runtime.CompilerServices;
+using MonoGameLib.Entities;
 
 namespace ai_Game.Helpers
 {
@@ -93,6 +94,10 @@ namespace ai_Game.Helpers
         {
             ShapebatcherHelpers.HelperDrawLine(shapeBatcher, bar.bar);
 
+        }
+        public static void Draw(this ShapeBatcher shapeBatcher, Fly fly)
+        {
+            ShapebatcherHelpers.Draw(shapeBatcher, fly.Hitbox);
         }
 
 

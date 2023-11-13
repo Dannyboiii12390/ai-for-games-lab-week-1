@@ -42,6 +42,7 @@ namespace ai_for_games_lab_week_1
         //Entities
         private Player _player;
         private Enemy _boss;
+        private List<Fly> swarm = new List<Fly>();
 
         //shapes
         HealthBar BossHealthBar;
@@ -65,10 +66,10 @@ namespace ai_for_games_lab_week_1
             screenWidth = _graphics.GraphicsDevice.Viewport.Width;
             screenHeight = _graphics.GraphicsDevice.Viewport.Height;
 
-            Circle playerCircle = new Circle(new Vector2(screenWidth/2, screenHeight/2), 30, Color.BlueViolet);
+            Circle playerCircle = new Circle(new Vector2(screenWidth/2, screenHeight/2), 15, Color.BlueViolet);
             Circle EnemyCircle = new Circle(new Vector2(screenWidth / 2 - 50, screenHeight / 2 - 50), 30, Color.Red);
 
-            _player = new Player(100, 5, playerCircle);
+            _player = new Player(100, 5, playerCircle, 50);
             _boss = new Enemy(100, 5, EnemyCircle);
 
             BossHealthBar = new HealthBar(new Vector2(screenWidth * 0.01f, screenHeight * 0.95f), new Vector2(screenWidth * 0.99f, screenHeight * 0.95f), Color.Purple, 30);
@@ -79,9 +80,6 @@ namespace ai_for_games_lab_week_1
 
             //IMGui
             _guiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
-
-
-
 
             base.Initialize();
 
@@ -103,18 +101,41 @@ namespace ai_for_games_lab_week_1
                 Exit();
 
             Vector2 mousePosition = Mouse.GetState().Position.FlipY(_graphics.GraphicsDevice.Viewport.Height);
-            _player.Hitbox.changePosition(mousePosition);
 
-            _boss.Hitbox.updateVel(mousePosition);
+            //change player position
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                _player.Move(new Vector2(0, _player.movespeed));
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                _player.Move(new Vector2(0, -_player.movespeed));
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                _player.Move(new Vector2(-_player.movespeed, 0));
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                _player.Move(new Vector2(_player.movespeed, 0));
+            }
+            
+            if (Keyboard.GetState ().IsKeyDown(Keys.E))
+            {
+                _boss.isInvincible = false;
+            }
+            
+
+
+            _boss.Hitbox.updateVel(_player.Hitbox._position);
             _boss.Hitbox.seek();
 
             //if space pressed shoot a bullet
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && _player.gameTick >= _player.DealDamageInterval)
             {
-                Bullet bull = new Bullet(_player.Hitbox._position, 1, _boss.Hitbox._position, Color.OrangeRed);
+                Bullet bull = new Bullet(_player.Hitbox._position, 1, mousePosition, Color.OrangeRed);
                 _player.shoot(bull);
                 _player.ResetGameTick();
-
             }
             else
             {
@@ -135,7 +156,17 @@ namespace ai_for_games_lab_week_1
                     _player._bullets.Remove(_player._bullets[i]);
                     _boss.TakeDamage(_player.Damage);
 
-                    
+                    if (_boss.MaxHealth * 0.55 >= _boss.Health && _boss.Health >= _boss.MaxHealth * 0.45)
+                    {
+                        _boss.isInvincible = true;
+                        List<Fly> flies = _boss.CreateSwarm(10);
+                        foreach (Fly fly in flies)
+                        {
+                            swarm.Add(fly);
+                        }
+                    }
+
+
                 }
                 
             }
@@ -170,6 +201,7 @@ namespace ai_for_games_lab_week_1
             {
                 _boss.IncGameTick();
             }
+            
 
             //update boss health bar
             BossHealthBar.update(_boss.GetHealthAsDecimal());
@@ -188,45 +220,15 @@ namespace ai_for_games_lab_week_1
             _shapeBatcher.Draw(BossHealthBar);
             _shapeBatcher.Draw(playerHealthBar);
             
+            
             foreach (Bullet bullet in _player._bullets)
             {
                 _shapeBatcher.Draw(bullet);
             }
-
-
-
-            //IMGui
-            /*
-            _guiRenderer.BeginLayout(gameTime);
-
-            ImGui.Begin("Player");
-
-            ImGui.Button($"Health {_player.Health.ToString()}");
-            ImGui.Button($"Health as Dec {_player.GetHealthAsDecimal().ToString()}");
-            ImGui.Button(playerHealthBar.End.ToString());
-            ImGui.Button($"game tick {_player.gameTick}");
-            ImGui.Button($"shootInterval {_player.DealDamageInterval}");
-
-            ImGui.End();
-
-
-            ImGui.Begin("Boss Health");
-
-            ImGui.Button($"Health {_boss.Health.ToString()}");
-            ImGui.Button($"Health as Dec {_boss.GetHealthAsDecimal().ToString()}");
-            ImGui.Button(BossHealthBar.End.ToString());
-            ImGui.Button($"game tick {_boss.gameTick}");
-            ImGui.Button($"shootInterval {_boss.DealDamageInterval}");
-
-            ImGui.End();
-            
-
-            _guiRenderer.EndLayout();
-            */
-
-            
-            
-
+            foreach(Fly fly in swarm)
+            {
+                _shapeBatcher.Draw(fly);
+            }
 
 
             base.Draw(gameTime);
