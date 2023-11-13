@@ -11,6 +11,17 @@ using System;
 using MonoGameLib.Items;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
+using MonoGame.ImGui;
+
+//todo
+//todo change movement so it takes keyboard input, not mouse input
+//todo fix issues with polygon class
+//todo add flies
+//todo add flocking steering behaviour
+//todo add pathfinding algorithm
+//todo add blocks 
+
+
 
 namespace ai_for_games_lab_week_1
 {
@@ -24,7 +35,8 @@ namespace ai_for_games_lab_week_1
         private int screenWidth;
         private int screenHeight;
         private int gameTick = 0;
-        private int shootInterval = 10;
+        
+        
 
 
         //Entities
@@ -38,7 +50,8 @@ namespace ai_for_games_lab_week_1
 
 
         //test variables
-        
+        private ImGuiRenderer _guiRenderer;
+
         public MyGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -62,6 +75,14 @@ namespace ai_for_games_lab_week_1
             playerHealthBar = new HealthBar(new Vector2(screenWidth * 0.65f, screenHeight * 0.05f), new Vector2(screenWidth * 0.99f, screenHeight * 0.05f), Color.Red);
            
             _shapeBatcher = new ShapeBatcher(this);
+
+
+            //IMGui
+            _guiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
+
+
+
+
             base.Initialize();
 
 
@@ -73,7 +94,7 @@ namespace ai_for_games_lab_week_1
 
             _font = this.Content.Load<SpriteFont>("MyFont");
 
-            // TODO: use this.Content to load your game content here
+            //use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -88,20 +109,16 @@ namespace ai_for_games_lab_week_1
             _boss.Hitbox.seek();
 
             //if space pressed shoot a bullet
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && gameTick >= shootInterval)
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _player.gameTick >= _player.DealDamageInterval)
             {
-                Bullet bull = new Bullet(_player.Hitbox._position, 10, _boss.Hitbox._position, Color.OrangeRed);
+                Bullet bull = new Bullet(_player.Hitbox._position, 1, _boss.Hitbox._position, Color.OrangeRed);
                 _player.shoot(bull);
-                gameTick = 0;
-
-                
-
-
+                _player.ResetGameTick();
 
             }
             else
             {
-                 gameTick++;
+                _player.IncGameTick();
             }
 
             //update location of each bullet
@@ -123,7 +140,7 @@ namespace ai_for_games_lab_week_1
                 
             }
 
-            //remove a bulllet if off screen
+            //remove a bullet if off screen
             for(int i = _player._bullets.Count - 1; i >= 0;i--)
             {
                 Bullet bullet = _player._bullets[i];
@@ -144,9 +161,14 @@ namespace ai_for_games_lab_week_1
             }
 
             //check if boss is in melee range to swing
-            if(_player.Hitbox.isInside(_boss.Hitbox._position))
+            if(_boss.Hitbox.isInside(_player.Hitbox._position) && _boss.gameTick >= _boss.DealDamageInterval)
             {
                 _player.TakeDamage(_boss.Damage);
+                _boss.ResetGameTick();
+            }
+            else
+            {
+                _boss.IncGameTick();
             }
 
             //update boss health bar
@@ -170,6 +192,42 @@ namespace ai_for_games_lab_week_1
             {
                 _shapeBatcher.Draw(bullet);
             }
+
+
+
+            //IMGui
+            /*
+            _guiRenderer.BeginLayout(gameTime);
+
+            ImGui.Begin("Player");
+
+            ImGui.Button($"Health {_player.Health.ToString()}");
+            ImGui.Button($"Health as Dec {_player.GetHealthAsDecimal().ToString()}");
+            ImGui.Button(playerHealthBar.End.ToString());
+            ImGui.Button($"game tick {_player.gameTick}");
+            ImGui.Button($"shootInterval {_player.DealDamageInterval}");
+
+            ImGui.End();
+
+
+            ImGui.Begin("Boss Health");
+
+            ImGui.Button($"Health {_boss.Health.ToString()}");
+            ImGui.Button($"Health as Dec {_boss.GetHealthAsDecimal().ToString()}");
+            ImGui.Button(BossHealthBar.End.ToString());
+            ImGui.Button($"game tick {_boss.gameTick}");
+            ImGui.Button($"shootInterval {_boss.DealDamageInterval}");
+
+            ImGui.End();
+            
+
+            _guiRenderer.EndLayout();
+            */
+
+            
+            
+
+
 
             base.Draw(gameTime);
         }

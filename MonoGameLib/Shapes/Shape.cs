@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLib.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,26 +11,16 @@ using System.Threading.Tasks;
 namespace MonoGameLib.Shapes
 {   
 
-    public abstract class Shape
+    public abstract class Shape : AI
     {
-        
-        public Vector2 _position { get; protected set; }
-        public Vector2 _velocity { get; protected set; }
-
-
-
-        protected float coefficientOfSpeed = 0.015f;
         public Microsoft.Xna.Framework.Color _colour { get; protected set; }
         
 
-        public Shape(Vector2 pPosition, Microsoft.Xna.Framework.Color pColour)
+        public Shape(Vector2 pPosition, Microsoft.Xna.Framework.Color pColour) : base(pPosition, Vector2.Zero, 0.015f)
         {
-            _position = pPosition;
             _colour = pColour;
-            
-            
-
         }
+
         public abstract bool isInside(Vector2 pPosition);
 
         public void changeColour(Microsoft.Xna.Framework.Color c)
@@ -40,53 +31,7 @@ namespace MonoGameLib.Shapes
         {
             return $"Shape with position {_position.ToString()}";
         }
-        public void changePosition(Vector2 pPos)
-        {
-            _position = pPos;
-        }
 
-        public void changeVelocity(Vector2 v)
-        {
-            _velocity = v;
-        }
-
-        public virtual void updateVel(Vector2 pTarget)
-        {
-
-
-            //difference
-            Vector2 v = _position - pTarget;
-
-            //normalise
-            v = Vector2.Normalize(v);
-
-            //multiply by length between
-
-            
-            _velocity = v * getLengthBetween(pTarget) * coefficientOfSpeed;
-           
-            
-        }
-        
-        private float getLengthBetween(Vector2 pTarget)
-        {
-            Vector2 delV = _position - pTarget;
-            float len = delV.Length();
-
-            return len;
-        }
-        public virtual void seek()
-        {
-            
-            _position = _position - _velocity;
-            
-        }
-        
-
-
-
-        
-        
     }
 
     

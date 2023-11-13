@@ -31,7 +31,10 @@ namespace MonoGameLib.Items
 
         public void update(float health)
         {
-            End = new Vector2(FullEnd.X * health, FullEnd.Y);
+            float x = FullEnd.X - Position.X;
+            x = x * health;
+  
+            End = new Vector2(Position.X + x, End.Y);
 
             bar = new Line(Position, End, colour, bar.thickness);
         }

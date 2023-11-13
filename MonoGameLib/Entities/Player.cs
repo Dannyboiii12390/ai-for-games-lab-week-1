@@ -19,6 +19,11 @@ namespace MonoGameLib.Entities
             Hitbox = pHitbox;
 
         }
+        public Player(float pHealth, float pDamage, Circle pHitbox, int pDealDamageInterval) : base(pHealth, pDamage, pDealDamageInterval)
+        {
+            Hitbox = pHitbox;
+
+        }
         public void shoot(Bullet bullet)
         {
             _bullets.Add(bullet);
