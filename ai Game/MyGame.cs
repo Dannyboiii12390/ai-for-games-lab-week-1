@@ -14,9 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 using MonoGame.ImGui;
 
 //todo
-//todo change movement so it takes keyboard input, not mouse input
 //todo fix issues with polygon class
-//todo add flies
 //todo add flocking steering behaviour
 //todo add pathfinding algorithm
 //todo add blocks 
@@ -69,8 +67,8 @@ namespace ai_for_games_lab_week_1
             Circle playerCircle = new Circle(new Vector2(screenWidth/2, screenHeight/2), 15, Color.BlueViolet);
             Circle EnemyCircle = new Circle(new Vector2(screenWidth / 2 - 50, screenHeight / 2 - 50), 30, Color.Red);
 
-            _player = new Player(100, 5, playerCircle, 50);
-            _boss = new Enemy(100, 5, EnemyCircle);
+            _player = new Player(100, 5, playerCircle, 30);
+            _boss = new Enemy(100, 5, EnemyCircle, 35);
 
             BossHealthBar = new HealthBar(new Vector2(screenWidth * 0.01f, screenHeight * 0.95f), new Vector2(screenWidth * 0.99f, screenHeight * 0.95f), Color.Purple, 30);
             playerHealthBar = new HealthBar(new Vector2(screenWidth * 0.65f, screenHeight * 0.05f), new Vector2(screenWidth * 0.99f, screenHeight * 0.05f), Color.Red);
@@ -156,9 +154,8 @@ namespace ai_for_games_lab_week_1
                     _player._bullets.Remove(_player._bullets[i]);
                     _boss.TakeDamage(_player.Damage);
 
-                    if (_boss.MaxHealth * 0.55 >= _boss.Health && _boss.Health >= _boss.MaxHealth * 0.45)
+                    if ( _boss.Health <= _boss.MaxHealth * 0.5)
                     {
-                        _boss.isInvincible = true;
                         List<Fly> flies = _boss.CreateSwarm(10);
                         foreach (Fly fly in flies)
                         {
