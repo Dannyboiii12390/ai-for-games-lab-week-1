@@ -51,6 +51,7 @@ namespace ai_for_games_lab_week_1
         //test variables
         private ImGuiRenderer _guiRenderer;
 
+
         public MyGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -76,8 +77,13 @@ namespace ai_for_games_lab_week_1
             _shapeBatcher = new ShapeBatcher(this);
 
 
-            //IMGui
+            //Test
             _guiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
+            List<Vector2> v = new List<Vector2>();
+            v.Add(new Vector2(200 * 2, 200 * 2));
+            v.Add(new Vector2(250 * 2, 200 * 2));
+            v.Add(new Vector2(200 * 2, 150 * 2));
+            v.Add(new Vector2(250 * 2, 150 * 2));
 
             base.Initialize();
 
@@ -131,7 +137,7 @@ namespace ai_for_games_lab_week_1
             //if space pressed shoot a bullet
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && _player.gameTick >= _player.DealDamageInterval)
             {
-                Bullet bull = new Bullet(_player.Hitbox._position, 1, mousePosition, Color.OrangeRed);
+                Bullet bull = new Bullet(_player.Hitbox._position, 1, 10, mousePosition, Color.OrangeRed);
                 _player.shoot(bull);
                 _player.ResetGameTick();
             }
@@ -204,6 +210,8 @@ namespace ai_for_games_lab_week_1
             BossHealthBar.update(_boss.GetHealthAsDecimal());
             //update player health bar
             playerHealthBar.update(_player.GetHealthAsDecimal());
+
+            //Test
                                     
             base.Update(gameTime);
         }
@@ -226,6 +234,8 @@ namespace ai_for_games_lab_week_1
             {
                 _shapeBatcher.Draw(fly);
             }
+
+            //Test
 
 
             base.Draw(gameTime);

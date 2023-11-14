@@ -13,12 +13,13 @@ namespace MonoGameLib.Shapes
         public  List<Triangle> triangles { get; private set; } = new List<Triangle>();
 
 
-        public Polygon(Vector2 pPosition, List<Vector2> point,Color pColour) : base(pPosition, pColour)
+        public Polygon(List<Vector2> point,Color pColour) : base(point[0], pColour)
         {
-            for (int i =2; i < point.Count; i++)
+            for (int i = 2; i < point.Count; i++)
             {
                 triangles.Add(new Triangle(point[i - 2], point[i-1], point[i], pColour));
             }
+            //triangles.Add(new Triangle(point[0], point[point.Count-1], point[point.Count-2], pColour));
         }
 
         public override bool isInside(Vector2 pPosition)

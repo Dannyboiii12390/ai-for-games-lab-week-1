@@ -191,7 +191,29 @@ namespace ai_for_games_lab_week_1
                 _shapeCount++;
             }
 
-            public void DrawCircle(Vector2 pCentre, float pRadius, int pNumVertices, float pThickness, Color pColour)
+
+        public void DrawTriangle(Vector2 pA, Vector2 pB, Vector2 pC, Color pColour)
+        {
+            EnsureStarted();
+
+            const int shapeVertexCount = 3;
+            const int shapeIndexCount = 3;
+
+            EnsureSpace(shapeVertexCount, shapeIndexCount);
+
+            _indices[_indexCount++] = 0 + _vertexCount;
+            _indices[_indexCount++] = 1 + _vertexCount;
+            _indices[_indexCount++] = 2 + _vertexCount;
+
+            _vertices[_vertexCount++] = new VertexPositionColor(new Vector3(pA.X , pA.Y, 0f), pColour);
+            _vertices[_vertexCount++] = new VertexPositionColor(new Vector3(pC.X, pC.Y, 0f), pColour);
+            _vertices[_vertexCount++] = new VertexPositionColor(new Vector3(pB.X, pB.Y, 0f), pColour);
+
+
+            _shapeCount++;
+        }
+
+        public void DrawCircle(Vector2 pCentre, float pRadius, int pNumVertices, float pThickness, Color pColour)
             {
                 const int MIN_POINTS = 3;
                 const int MAX_POINTS = 256;

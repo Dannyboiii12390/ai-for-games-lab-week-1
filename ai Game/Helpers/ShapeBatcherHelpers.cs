@@ -81,10 +81,10 @@ namespace ai_Game.Helpers
             shapeBatcher.Begin();
             foreach (Triangle triangle in polygon.triangles)
             {
-
-                shapeBatcher.DrawLine(triangle._position, triangle._position2, 2, polygon._colour);
-                shapeBatcher.DrawLine(triangle._position2, triangle._position3, 2, polygon._colour);
-                shapeBatcher.DrawLine(triangle._position3, triangle._position, 2, polygon._colour);
+                shapeBatcher.DrawTriangle(triangle._position, triangle._position2, triangle._position3, polygon._colour);
+                //shapeBatcher.DrawLine(triangle._position, triangle._position2, 2, polygon._colour);
+                //shapeBatcher.DrawLine(triangle._position2, triangle._position3, 2, polygon._colour);
+                //shapeBatcher.DrawLine(triangle._position3, triangle._position, 2, polygon._colour);
 
             }
             shapeBatcher.End();

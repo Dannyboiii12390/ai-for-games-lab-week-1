@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +32,11 @@ namespace MonoGameLib.Shapes
 
             float n = (Py * V1x - Px * V1y) / (V2y * V1x - V2x * V1y);
             float m = (Px - n * V2x) / V1x;
+            
+            if (float.IsNaN(m) || float.IsInfinity(m) || float.IsNegativeInfinity(m))
+            {
+                m = (_position.Y - point.Y) / (_position2.Y - point.Y);
+            }
 
             return m >= 0 && m <= 1 && n >= 0 && n <= 1 && m + n <= 1;
         }
