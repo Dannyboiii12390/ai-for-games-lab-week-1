@@ -205,9 +205,9 @@ namespace ai_for_games_lab_week_1
             
 
             //update boss health bar
-            BossHealthBar.update(_boss.GetHealthAsDecimal());
+            _boss.healthBar.update(_boss.GetHealthAsDecimal());
             //update player health bar
-            playerHealthBar.update(_player.GetHealthAsDecimal());
+            _player.healthBar.update(_player.GetHealthAsDecimal());
 
             //Test
                                     
@@ -220,8 +220,8 @@ namespace ai_for_games_lab_week_1
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _shapeBatcher.Draw(_player.Hitbox);
             _shapeBatcher.Draw(_boss.Hitbox);
-            _shapeBatcher.Draw(BossHealthBar);
-            _shapeBatcher.Draw(playerHealthBar);
+            _shapeBatcher.Draw(_boss.healthBar);
+            _shapeBatcher.Draw(_player.healthBar);
             
             
             foreach (Bullet bullet in _player._bullets)
