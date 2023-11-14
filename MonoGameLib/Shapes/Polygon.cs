@@ -10,7 +10,15 @@ namespace MonoGameLib.Shapes
 {
     public class Polygon : Shape
     {
-        public  List<Triangle> triangles { get; private set; } = new List<Triangle>();
+        /* example of how vector points need to be organised (Z pattern)
+            List<Vector2> v = new List<Vector2>();
+            v.Add(new Vector2(200, 200));
+            v.Add(new Vector2(250, 200));
+            v.Add(new Vector2(200, 150));
+            v.Add(new Vector2(250, 150));
+        */
+
+        public List<Triangle> triangles { get; private set; } = new List<Triangle>();
 
 
         public Polygon(List<Vector2> point,Color pColour) : base(point[0], pColour)

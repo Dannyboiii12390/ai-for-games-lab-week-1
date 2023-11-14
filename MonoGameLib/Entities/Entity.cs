@@ -1,6 +1,8 @@
-﻿using MonoGameLib.Shapes;
+﻿using MonoGameLib.Items;
+using MonoGameLib.Shapes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +18,7 @@ namespace MonoGameLib
         public int DealDamageInterval { get; protected set; }
         public int gameTick { get; private set; } = 0;
         public bool isInvincible { get; set; } = false;
+        public HealthBar healthBar { get; protected set; } = null;
  
         public Entity(float pHealth, float pDamage, int pDamageInterval = 10) 
         { 
@@ -43,6 +46,10 @@ namespace MonoGameLib
         public void ResetGameTick()
         {
             gameTick = 0;
+        }
+        public void AddHealthBar(HealthBar hb)
+        {
+            healthBar = hb;
         }
 
 

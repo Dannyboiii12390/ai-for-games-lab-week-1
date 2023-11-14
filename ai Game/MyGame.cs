@@ -14,10 +14,10 @@ using static System.Net.Mime.MediaTypeNames;
 using MonoGame.ImGui;
 
 //todo
-//todo fix issues with polygon class
 //todo add flocking steering behaviour
 //todo add pathfinding algorithm
 //todo add blocks 
+//read level info from file
 
 
 
@@ -32,7 +32,7 @@ namespace ai_for_games_lab_week_1
         private ShapeBatcher _shapeBatcher;
         private int screenWidth;
         private int screenHeight;
-        private int gameTick = 0;
+        
         
         
 
@@ -43,8 +43,7 @@ namespace ai_for_games_lab_week_1
         private List<Fly> swarm = new List<Fly>();
 
         //shapes
-        HealthBar BossHealthBar;
-        HealthBar playerHealthBar;
+        
 
 
 
@@ -71,19 +70,18 @@ namespace ai_for_games_lab_week_1
             _player = new Player(100, 5, playerCircle, 30);
             _boss = new Enemy(100, 5, EnemyCircle, 35);
 
-            BossHealthBar = new HealthBar(new Vector2(screenWidth * 0.01f, screenHeight * 0.95f), new Vector2(screenWidth * 0.99f, screenHeight * 0.95f), Color.Purple, 30);
-            playerHealthBar = new HealthBar(new Vector2(screenWidth * 0.65f, screenHeight * 0.05f), new Vector2(screenWidth * 0.99f, screenHeight * 0.05f), Color.Red);
-           
+            HealthBar BossHealthBar = new HealthBar(new Vector2(screenWidth * 0.01f, screenHeight * 0.95f), new Vector2(screenWidth * 0.99f, screenHeight * 0.95f), Color.Purple, 30);
+            HealthBar playerHealthBar = new HealthBar(new Vector2(screenWidth * 0.65f, screenHeight * 0.05f), new Vector2(screenWidth * 0.99f, screenHeight * 0.05f), Color.Red);
+            
+            _player.AddHealthBar(playerHealthBar);
+            _boss.AddHealthBar(BossHealthBar);
+
             _shapeBatcher = new ShapeBatcher(this);
 
 
             //Test
             _guiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
-            List<Vector2> v = new List<Vector2>();
-            v.Add(new Vector2(200 * 2, 200 * 2));
-            v.Add(new Vector2(250 * 2, 200 * 2));
-            v.Add(new Vector2(200 * 2, 150 * 2));
-            v.Add(new Vector2(250 * 2, 150 * 2));
+            
 
             base.Initialize();
 
