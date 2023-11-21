@@ -12,6 +12,7 @@ namespace MonoGameLib.Items
     {
         public Circle hitbox { get; private set; }
         public float Damage { get; private set; }
+        
 
 
         public Bullet(Vector2 pPosition, int size, float pDamage, Vector2 pTarget ,Color pColour) : base(pPosition, pColour)
@@ -20,6 +21,7 @@ namespace MonoGameLib.Items
             Damage = pDamage;
             coefficientOfSpeed = 2f;
             updateVel(pTarget);
+            ai = seek;
 
         }
 

@@ -14,7 +14,7 @@ namespace MonoGameLib.Shapes
         public int thickness{ get; private set; }
         
 
-        public Line(Vector2 pPosition, Vector2 pEnd, Color pColour, int pThickness) : base(pPosition, pColour)
+        public Line(Vector2 pPosition, Vector2 pEnd, Color pColour, int pThickness, SteeringMethod pAI = null) : base(pPosition, pColour, pAI)
         {
             end = pEnd;
             thickness = pThickness;

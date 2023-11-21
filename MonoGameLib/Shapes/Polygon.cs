@@ -19,15 +19,16 @@ namespace MonoGameLib.Shapes
         */
 
         public List<Triangle> triangles { get; private set; } = new List<Triangle>();
+        public List<Vector2> points { get; private set; }
 
-
-        public Polygon(List<Vector2> point,Color pColour) : base(point[0], pColour)
+        public Polygon(List<Vector2> point,Color pColour, SteeringMethod pAI = null) : base(point[0], pColour,pAI)
         {
             for (int i = 2; i < point.Count; i++)
             {
                 triangles.Add(new Triangle(point[i - 2], point[i-1], point[i], pColour));
             }
             //triangles.Add(new Triangle(point[0], point[point.Count-1], point[point.Count-2], pColour));
+            points = point;
         }
 
         public override bool isInside(Vector2 pPosition)

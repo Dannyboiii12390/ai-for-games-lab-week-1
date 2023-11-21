@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MonoGameLib.Utilities.File_Handlers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,19 +8,16 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MonoGameLib.Utilities
+namespace MonoGameLib.FileHandlers
 {
-    public class JSONFileHandler<T>
+    public class JSONFileHandler<T> : FileHandler<T>
     {
-        string path;
-
-        public JSONFileHandler(string pPath)
+        public JSONFileHandler(string pPath) : base(pPath)
         {
-            path = pPath;
-
 
         }
-        public List<T> Read()
+
+        public override List<T> Read()
         {
             List<T> values = new List<T>();
             using (StreamReader sr = new StreamReader(path))
@@ -30,7 +28,7 @@ namespace MonoGameLib.Utilities
             return values;
 
         }
-        public void Write(List<T> values) 
+        public override void Write(List<T> values) 
         { 
             using(StreamWriter file = File.CreateText(path))
             {

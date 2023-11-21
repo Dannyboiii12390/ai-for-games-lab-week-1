@@ -43,13 +43,13 @@ namespace ai_for_games_lab_week_1
         private List<Fly> swarm = new List<Fly>();
 
         //shapes
-        
+        Arena arena = new Arena();
 
 
 
         //test variables
         private ImGuiRenderer _guiRenderer;
-
+        bool inside;
 
         public MyGame()
         {
@@ -77,7 +77,20 @@ namespace ai_for_games_lab_week_1
             _boss.AddHealthBar(BossHealthBar);
 
             _shapeBatcher = new ShapeBatcher(this);
+            
+            List<Vector2> poly1 = new List<Vector2>();
+            poly1.Add(new Vector2(150, 150));
+            poly1.Add(new Vector2(300, 150));
+            poly1.Add(new Vector2(150, 100));
+            poly1.Add(new Vector2(300, 100));
+            arena.AddPolygon(new Polygon(poly1, Color.Gray));
 
+            List<Vector2 > poly2 = new List<Vector2>();
+            poly2.Add(new Vector2(150, 150));
+            poly2.Add(new Vector2(200, 150));
+            poly2.Add(new Vector2(150, 250));
+            poly2.Add(new Vector2(200, 250));
+            arena.AddPolygon(new Polygon(poly2, Color.Gray));
 
             //Test
             _guiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
@@ -104,6 +117,11 @@ namespace ai_for_games_lab_week_1
 
             Vector2 mousePosition = Mouse.GetState().Position.FlipY(_graphics.GraphicsDevice.Viewport.Height);
 
+            inside = arena.Obstacles[0].isInside(mousePosition);
+            if (!inside)
+            {
+                inside = arena.Obstacles[1].isInside(mousePosition);
+            }
             //change player position
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
@@ -202,6 +220,9 @@ namespace ai_for_games_lab_week_1
             {
                 _boss.IncGameTick();
             }
+
+            // check no object is colliding with arena
+
             
 
             //update boss health bar
@@ -217,7 +238,7 @@ namespace ai_for_games_lab_week_1
         protected override void Draw(GameTime gameTime)
         { 
             
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DarkGray);
             _shapeBatcher.Draw(_player.Hitbox);
             _shapeBatcher.Draw(_boss.Hitbox);
             _shapeBatcher.Draw(_boss.healthBar);
@@ -232,8 +253,27 @@ namespace ai_for_games_lab_week_1
             {
                 _shapeBatcher.Draw(fly);
             }
+            foreach (Polygon poly in arena.Obstacles)
+            {
+                _shapeBatcher.Draw(poly);
+            }
 
             //Test
+
+            _guiRenderer.BeginLayout(gameTime);
+            
+            ImGui.Begin("Obstacle");
+            /*
+
+            ImGui.Text($"{arena.Obstacles[0].points[0].X.ToString()} {arena.Obstacles[0].points[0].Y.ToString()}");
+            ImGui.Text($"{arena.Obstacles[0].points[1].X.ToString()} {arena.Obstacles[0].points[1].Y.ToString()}");
+            ImGui.Text($"{arena.Obstacles[0].points[2].X.ToString()} {arena.Obstacles[0].points[2].Y.ToString()}");
+            ImGui.Text($"{arena.Obstacles[0].points[3].X.ToString()} {arena.Obstacles[0].points[3].Y.ToString()}");
+            */
+            ImGui.Text(inside.ToString());
+
+            ImGui.End();
+            _guiRenderer.EndLayout();
 
 
             base.Draw(gameTime);

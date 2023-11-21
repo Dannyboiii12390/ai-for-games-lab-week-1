@@ -16,7 +16,7 @@ namespace MonoGameLib.Shapes
         public Microsoft.Xna.Framework.Color _colour { get; protected set; }
         
 
-        public Shape(Vector2 pPosition, Microsoft.Xna.Framework.Color pColour) : base(pPosition, Vector2.Zero, 0.015f)
+        public Shape(Vector2 pPosition, Microsoft.Xna.Framework.Color pColour, SteeringMethod pAI = null) : base(pPosition, Vector2.Zero, 0.015f, pAI)
         {
             _colour = pColour;
         }
@@ -31,6 +31,7 @@ namespace MonoGameLib.Shapes
         {
             return $"Shape with position {_position.ToString()}";
         }
+
 
     }
 
