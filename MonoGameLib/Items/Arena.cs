@@ -35,6 +35,17 @@ namespace MonoGameLib.Items
         {
             Obstacles.Add(new Polygon(sides, colour));
         }
+        public bool isInside(Vector2 pPos)
+        {
+            foreach (Polygon p in Obstacles)
+            {
+                if (p.isInside(pPos)) 
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
 
 

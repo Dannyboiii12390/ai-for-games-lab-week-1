@@ -12,6 +12,7 @@ using MonoGameLib.Items;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
 using MonoGame.ImGui;
+using Microsoft.Xna.Framework.Input.Touch;
 
 //todo
 //todo add flocking steering behaviour
@@ -77,20 +78,20 @@ namespace ai_for_games_lab_week_1
             _boss.AddHealthBar(BossHealthBar);
 
             _shapeBatcher = new ShapeBatcher(this);
-            
-            List<Vector2> poly1 = new List<Vector2>();
-            poly1.Add(new Vector2(150, 150));
-            poly1.Add(new Vector2(300, 150));
-            poly1.Add(new Vector2(150, 100));
-            poly1.Add(new Vector2(300, 100));
-            arena.AddPolygon(new Polygon(poly1, Color.Gray));
 
-            List<Vector2 > poly2 = new List<Vector2>();
-            poly2.Add(new Vector2(150, 150));
-            poly2.Add(new Vector2(200, 150));
-            poly2.Add(new Vector2(150, 250));
-            poly2.Add(new Vector2(200, 250));
-            arena.AddPolygon(new Polygon(poly2, Color.Gray));
+            //adding obstacles
+            Square squ = new Square(new Vector2(100, 100), 50, 50, Color.Gray);
+            arena.AddPolygon(squ.hitbox);
+            squ = new Square(new Vector2(100, screenHeight-130), 50, 50, Color.Gray);
+            arena.AddPolygon(squ.hitbox);
+            squ = new Square(new Vector2(screenWidth-150, 100), 50,50, Color.Gray);
+            arena.AddPolygon(squ.hitbox);
+            squ = new Square(new Vector2(screenWidth-150, screenHeight - 130), 50,50,Color.Gray);
+            arena.AddPolygon(squ.hitbox);
+            squ = new Square(new Vector2(screenWidth / 2 - 25, screenHeight - 130), 50, 50, Color.Gray);
+            arena.AddPolygon(squ.hitbox);
+            squ = new Square(new Vector2(screenWidth / 2 - 25, 100), 50, 50, Color.Gray);
+            arena.AddPolygon(squ.hitbox);
 
             //Test
             _guiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
@@ -118,10 +119,6 @@ namespace ai_for_games_lab_week_1
             Vector2 mousePosition = Mouse.GetState().Position.FlipY(_graphics.GraphicsDevice.Viewport.Height);
 
             inside = arena.Obstacles[0].isInside(mousePosition);
-            if (!inside)
-            {
-                inside = arena.Obstacles[1].isInside(mousePosition);
-            }
             //change player position
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
@@ -139,14 +136,11 @@ namespace ai_for_games_lab_week_1
             {
                 _player.Move(new Vector2(_player.movespeed, 0));
             }
-            
-            if (Keyboard.GetState ().IsKeyDown(Keys.E))
+            if (Keyboard.GetState().IsKeyDown(Keys.E))
             {
                 _boss.isInvincible = false;
             }
             
-
-
             _boss.Hitbox.updateVel(_player.Hitbox._position);
             _boss.Hitbox.seek();
 
@@ -184,12 +178,14 @@ namespace ai_for_games_lab_week_1
                             swarm.Add(fly);
                         }
                     }
-
-
+                }
+                //check if bullet has hit obstacle
+                else if (arena.isInside(_player._bullets[i].hitbox._position))
+                {
+                    _player._bullets.Remove(_player._bullets[i]);
                 }
                 
             }
-
             //remove a bullet if off screen
             for(int i = _player._bullets.Count - 1; i >= 0;i--)
             {
@@ -271,7 +267,8 @@ namespace ai_for_games_lab_week_1
             ImGui.Text($"{arena.Obstacles[0].points[3].X.ToString()} {arena.Obstacles[0].points[3].Y.ToString()}");
             */
             ImGui.Text(inside.ToString());
-
+            ImGui.Text(screenWidth.ToString());
+            ImGui.Text(screenHeight.ToString());
             ImGui.End();
             _guiRenderer.EndLayout();
 
