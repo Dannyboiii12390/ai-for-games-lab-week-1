@@ -23,6 +23,7 @@ namespace MonoGameLib.Entities
         public Enemy(float pHealth, float pDamage, Circle pHitbox, int pDealDamageInterval) : base(pHealth, pDamage, pDealDamageInterval)
         {
             Hitbox = pHitbox;
+            Hitbox.ChangeSteeringMethod(Hitbox.seek);
 
         }
         public List<Fly> CreateSwarm(int Amount)

@@ -14,6 +14,8 @@ namespace MonoGameLib.Entities
         public Fly(Circle circle, float pHealth = 1, float pDamage = 1, int pDamageInterval = 0) : base(pHealth, pDamage, pDamageInterval)
         {
             Hitbox = circle;
+            Hitbox.ChangeSteeringMethod(Hitbox.seek);
+            
         }
         
 

@@ -35,10 +35,6 @@ namespace ai_for_games_lab_week_1
         private int screenWidth;
         private int screenHeight;
         
-        
-        
-
-
         //Entities
         private Player _player;
         private Enemy _boss;
@@ -46,8 +42,6 @@ namespace ai_for_games_lab_week_1
 
         //shapes
         Arena arena = new Arena();
-
-
 
         //test variables
         private ImGuiRenderer _guiRenderer;
@@ -108,7 +102,6 @@ namespace ai_for_games_lab_week_1
 
             Vector2 mousePosition = Mouse.GetState().Position.FlipY(_graphics.GraphicsDevice.Viewport.Height);
 
-            inside = arena.Obstacles[0].isInside(mousePosition);
             //change player position
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
@@ -132,7 +125,7 @@ namespace ai_for_games_lab_week_1
             }
             
             _boss.Hitbox.updateVel(_player.Hitbox._position);
-            _boss.Hitbox.seek();
+            _boss.Hitbox.ai();
 
             //if space pressed shoot a bullet
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && _player.gameTick >= _player.DealDamageInterval)
@@ -146,10 +139,18 @@ namespace ai_for_games_lab_week_1
                 _player.IncGameTick();
             }
 
+            //update location of each fly
+            foreach (Fly fly in swarm)
+            {
+                fly.Hitbox.updateVel(_player.Hitbox._position);
+                fly.Hitbox.changeVelocity(fly.Hitbox._velocity*2.5f);
+                fly.Hitbox.ai();
+            }
+
             //update location of each bullet
             foreach (Bullet bullet in _player._bullets)
             {
-                bullet.seek();
+                bullet.ai();
             }
 
             //check if bullet has hit
@@ -176,6 +177,7 @@ namespace ai_for_games_lab_week_1
                 }
                 
             }
+
             //remove a bullet if off screen
             for(int i = _player._bullets.Count - 1; i >= 0;i--)
             {
@@ -207,7 +209,7 @@ namespace ai_for_games_lab_week_1
                 _boss.IncGameTick();
             }
 
-            // check no object is colliding with arena
+            // todo check no object is colliding with arena
 
             
 
@@ -247,21 +249,17 @@ namespace ai_for_games_lab_week_1
             //Test
 
             _guiRenderer.BeginLayout(gameTime);
-            
-            ImGui.Begin("Obstacle");
             /*
+            ImGui.Begin("Flies");
+    
+            foreach(Fly fly in swarm)
+            {
+                ImGui.Text($"Fly {fly.Hitbox._position.X} : {fly.Hitbox._position.Y}");
+            }
 
-            ImGui.Text($"{arena.Obstacles[0].points[0].X.ToString()} {arena.Obstacles[0].points[0].Y.ToString()}");
-            ImGui.Text($"{arena.Obstacles[0].points[1].X.ToString()} {arena.Obstacles[0].points[1].Y.ToString()}");
-            ImGui.Text($"{arena.Obstacles[0].points[2].X.ToString()} {arena.Obstacles[0].points[2].Y.ToString()}");
-            ImGui.Text($"{arena.Obstacles[0].points[3].X.ToString()} {arena.Obstacles[0].points[3].Y.ToString()}");
-            */
-            ImGui.Text(inside.ToString());
-            ImGui.Text(screenWidth.ToString());
-            ImGui.Text(screenHeight.ToString());
             ImGui.End();
+            */
             _guiRenderer.EndLayout();
-
 
             base.Draw(gameTime);
         }

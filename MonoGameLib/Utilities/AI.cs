@@ -25,6 +25,7 @@ namespace MonoGameLib.Utilities
             coefficientOfSpeed = pCoefficientOfSpeed;
             ai = pAI;
         }
+
         //utilities
         public void changePosition(Vector2 pPos)
         {
@@ -62,8 +63,12 @@ namespace MonoGameLib.Utilities
             return len;
         }
 
-
         //steering behaviours
+        public void ChangeSteeringMethod(SteeringMethod pAI)
+        {
+            ai = pAI;
+        }
+
         //set useAI to one of these
         public virtual void seek()
         {
