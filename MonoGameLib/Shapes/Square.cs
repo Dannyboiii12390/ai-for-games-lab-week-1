@@ -16,18 +16,18 @@ namespace MonoGameLib.Shapes
         public float height { get; private set; }
         public Color color { get; private set; }
         public Polygon hitbox { get; private set; }
-        public Square(Vector2 pPosition, float pWidth, float pHeight, Color pColour)
+        public Square(float X, float Y, float width, float height)
         {
-            position = pPosition;
-            width = pWidth;
-            height = pHeight;
-            color = pColour;
+            this.position = new Vector2(X, Y);
+            this.width = width;
+            this.height = height;
+            color = Color.Gray;
             List<Vector2> points = new List<Vector2>();
             points.Add(position);
             points.Add(new Vector2(position.X + width, position.Y));
             points.Add(new Vector2(position.X, position.Y + height));
             points.Add(new Vector2(position.X + width, position.Y + height));
-            hitbox = new Polygon(points, pColour);
+            hitbox = new Polygon(points, color);
 
 
         }

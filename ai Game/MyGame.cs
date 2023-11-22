@@ -13,6 +13,7 @@ using System.IO;
 using static System.Net.Mime.MediaTypeNames;
 using MonoGame.ImGui;
 using Microsoft.Xna.Framework.Input.Touch;
+using MonoGameLib.FileHandlers;
 
 //todo
 //todo add flocking steering behaviour
@@ -79,19 +80,8 @@ namespace ai_for_games_lab_week_1
 
             _shapeBatcher = new ShapeBatcher(this);
 
-            //adding obstacles
-            Square squ = new Square(new Vector2(100, 100), 50, 50, Color.Gray);
-            arena.AddPolygon(squ.hitbox);
-            squ = new Square(new Vector2(100, screenHeight-130), 50, 50, Color.Gray);
-            arena.AddPolygon(squ.hitbox);
-            squ = new Square(new Vector2(screenWidth-150, 100), 50,50, Color.Gray);
-            arena.AddPolygon(squ.hitbox);
-            squ = new Square(new Vector2(screenWidth-150, screenHeight - 130), 50,50,Color.Gray);
-            arena.AddPolygon(squ.hitbox);
-            squ = new Square(new Vector2(screenWidth / 2 - 25, screenHeight - 130), 50, 50, Color.Gray);
-            arena.AddPolygon(squ.hitbox);
-            squ = new Square(new Vector2(screenWidth / 2 - 25, 100), 50, 50, Color.Gray);
-            arena.AddPolygon(squ.hitbox);
+            //Arena
+            arena = new Arena(GetBoard(Environment.CurrentDirectory + @"\Files\Level 1.JSON"));
 
             //Test
             _guiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
@@ -275,6 +265,22 @@ namespace ai_for_games_lab_week_1
 
             base.Draw(gameTime);
         }
-        
+
+        public List<Polygon> GetBoard(string pPath)
+        {
+            List<Square> obstacles;
+            JSONFileHandler<Square> json = new JSONFileHandler<Square>(pPath);
+            obstacles = json.Read();
+
+            List<Polygon> polygons = new List<Polygon>();
+            foreach (Square square in obstacles)
+            {
+                polygons.Add(square.hitbox);
+            }
+
+            return polygons;
+        }
+
+
     }
 }
