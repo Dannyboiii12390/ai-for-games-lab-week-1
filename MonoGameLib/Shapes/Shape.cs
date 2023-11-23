@@ -16,7 +16,7 @@ namespace MonoGameLib.Shapes
         public Microsoft.Xna.Framework.Color _colour { get; protected set; }
         
 
-        public Shape(Vector2 pPosition, Microsoft.Xna.Framework.Color pColour, SteeringMethod pAI = null) : base(pPosition, Vector2.Zero, 0.015f, pAI)
+        public Shape(Vector2 pPosition, Microsoft.Xna.Framework.Color pColour) : base(pPosition, Vector2.Zero, 0.015f)
         {
             _colour = pColour;
         }

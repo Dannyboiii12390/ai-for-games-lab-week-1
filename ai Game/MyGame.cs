@@ -125,7 +125,7 @@ namespace ai_for_games_lab_week_1
             }
             
             _boss.Hitbox.updateVel(_player.Hitbox._position);
-            _boss.Hitbox.ai();
+            _boss.Hitbox.seek();
 
             //if space pressed shoot a bullet
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && _player.gameTick >= _player.DealDamageInterval)
@@ -142,15 +142,14 @@ namespace ai_for_games_lab_week_1
             //update location of each fly
             foreach (Fly fly in swarm)
             {
-                fly.Hitbox.updateVel(_player.Hitbox._position);
-                fly.Hitbox.changeVelocity(fly.Hitbox._velocity*2.5f);
-                fly.Hitbox.ai();
+                
+                fly.Hitbox.seek();
             }
 
             //update location of each bullet
             foreach (Bullet bullet in _player._bullets)
             {
-                bullet.ai();
+                bullet.seek();
             }
 
             //check if bullet has hit
@@ -163,7 +162,7 @@ namespace ai_for_games_lab_week_1
 
                     if ( _boss.Health <= _boss.MaxHealth * 0.5)
                     {
-                        List<Fly> flies = _boss.CreateSwarm(10);
+                        List<Fly> flies = _boss.CreateSwarm(10, _player.Hitbox._position);
                         foreach (Fly fly in flies)
                         {
                             swarm.Add(fly);
@@ -278,6 +277,7 @@ namespace ai_for_games_lab_week_1
 
             return polygons;
         }
+        
 
 
     }

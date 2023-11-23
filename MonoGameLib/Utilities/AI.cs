@@ -11,19 +11,16 @@ namespace MonoGameLib.Utilities
 {
     public abstract class AI
     {
-        public delegate void SteeringMethod();
-        public SteeringMethod ai;
         public Vector2 _velocity { get; protected set; }
         public Vector2 _position { get; protected set; }
 
         protected float coefficientOfSpeed;
 
-        public AI(Vector2 pPosition, Vector2 pVelocity, float pCoefficientOfSpeed, SteeringMethod pAI)
+        public AI(Vector2 pPosition, Vector2 pVelocity, float pCoefficientOfSpeed)
         {
             _position = pPosition;
             _velocity = pVelocity;
             coefficientOfSpeed = pCoefficientOfSpeed;
-            ai = pAI;
         }
 
         //utilities
@@ -64,12 +61,6 @@ namespace MonoGameLib.Utilities
         }
 
         //steering behaviours
-        public void ChangeSteeringMethod(SteeringMethod pAI)
-        {
-            ai = pAI;
-        }
-
-        //set useAI to one of these
         public virtual void seek()
         {
             _position = _position - _velocity;

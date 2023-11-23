@@ -14,7 +14,7 @@ namespace MonoGameLib.Shapes
         public Vector2 _position2 { get; private set; }
         public Vector2 _position3 { get; private set; }
 
-        public Triangle(Vector2 pPosition, Vector2 p2, Vector2 p3, Microsoft.Xna.Framework.Color pColour, SteeringMethod pAI = null) : base(pPosition, pColour, pAI)
+        public Triangle(Vector2 pPosition, Vector2 p2, Vector2 p3, Microsoft.Xna.Framework.Color pColour) : base(pPosition, pColour)
         {
             _position2 = p2;
             _position3 = p3;

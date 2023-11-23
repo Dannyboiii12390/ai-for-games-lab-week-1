@@ -21,7 +21,6 @@ namespace MonoGameLib.Items
             Damage = pDamage;
             coefficientOfSpeed = 2f;
             updateVel(pTarget);
-            ai = seek;
 
         }
 

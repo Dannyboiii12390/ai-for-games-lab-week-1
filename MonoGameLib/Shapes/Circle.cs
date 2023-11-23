@@ -17,7 +17,7 @@ namespace MonoGameLib.Shapes
 
 
    
-        public Circle(Vector2 position, float radius, Color pColour, SteeringMethod pAI = null) : base(position, pColour, pAI)
+        public Circle(Vector2 position, float radius, Color pColour) : base(position, pColour)
         {
             _radius=radius;
             

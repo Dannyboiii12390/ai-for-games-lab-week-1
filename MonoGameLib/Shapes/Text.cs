@@ -14,7 +14,7 @@ namespace MonoGameLib.Shapes
         public string text { get; private set; }
         //public SpriteFont font { get; private set; }
         public Vector2 position { get; private set; }
-        public Text (string pText, Vector2 pPosition, Color pColour, SteeringMethod pAI = null) : base(pPosition , pColour, pAI)
+        public Text (string pText, Vector2 pPosition, Color pColour) : base(pPosition , pColour)
         {
             text = pText;
             

@@ -21,7 +21,7 @@ namespace MonoGameLib.Shapes
         public List<Triangle> triangles { get; private set; } = new List<Triangle>();
         public List<Vector2> points { get; private set; }
 
-        public Polygon(List<Vector2> point,Color pColour, SteeringMethod pAI = null) : base(point[0], pColour,pAI)
+        public Polygon(List<Vector2> point,Color pColour) : base(point[0], pColour)
         {
             for (int i = 2; i < point.Count; i++)
             {
