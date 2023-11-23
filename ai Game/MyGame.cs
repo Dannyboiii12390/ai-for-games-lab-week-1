@@ -14,6 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 using MonoGame.ImGui;
 using Microsoft.Xna.Framework.Input.Touch;
 using MonoGameLib.FileHandlers;
+using ai_Game.Utilities;
 
 //todo
 //todo add flocking steering behaviour
@@ -175,6 +176,14 @@ namespace ai_for_games_lab_week_1
                     _player._bullets.Remove(_player._bullets[i]);
                 }
                 
+            }
+            //check if fly has hit obstacle
+            for(int i = swarm.Count - 1; i >= 0;i--)
+            {
+                if (arena.isInside(swarm[i].Hitbox._position))
+                {
+                    swarm.Remove(swarm[i]);
+                }
             }
 
             //remove a bullet if off screen
