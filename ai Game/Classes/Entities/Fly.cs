@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGameLib.Shapes;
+using MonoGameLib.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace MonoGameLib.Entities
             Hitbox = circle;
             Hitbox.updateVel(pTarget);
             Hitbox._velocity.Normalize();
-            Hitbox.changeVelocity(Hitbox._velocity * (3f + Utilities.Utilities.GetRandNumber(0.1f, 2)));
+            Hitbox.changeVelocity(Hitbox._velocity * (3f + Utilities.Utilities.GetRandNumber(0f, 1f))); 
 
         }
 

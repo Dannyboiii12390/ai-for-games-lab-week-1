@@ -5,7 +5,6 @@ using ImGuiNET;
 using MonoGameLib.Shapes;
 using MonoGameLib.Entities;
 using System.Runtime.CompilerServices;
-using ai_Game.Helpers;
 using System.Collections.Generic;
 using System;
 using MonoGameLib.Items;
@@ -14,7 +13,8 @@ using static System.Net.Mime.MediaTypeNames;
 using MonoGame.ImGui;
 using Microsoft.Xna.Framework.Input.Touch;
 using MonoGameLib.FileHandlers;
-using ai_Game.Utilities;
+using ai_Game.Classes.Helpers;
+using ai_Game.Classes.Utilities;
 
 //todo
 //todo add flocking steering behaviour

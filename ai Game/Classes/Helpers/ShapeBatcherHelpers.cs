@@ -10,12 +10,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Color = Microsoft.Xna.Framework.Color;
 using ImGuiNET;
 using MonoGameLib.Shapes;
-using ai_for_games_lab_week_1;
 using MonoGameLib.Items;
 using System.Runtime.CompilerServices;
 using MonoGameLib.Entities;
+using ai_Game.Classes.Utilities;
 
-namespace ai_Game.Helpers
+namespace ai_Game.Classes.Helpers
 {
     internal static class ShapebatcherHelpers
     {
@@ -92,12 +92,12 @@ namespace ai_Game.Helpers
 
         public static void Draw(this ShapeBatcher shapeBatcher, HealthBar bar)
         {
-            ShapebatcherHelpers.HelperDrawLine(shapeBatcher, bar.bar);
+            shapeBatcher.HelperDrawLine(bar.bar);
 
         }
         public static void Draw(this ShapeBatcher shapeBatcher, Fly fly)
         {
-            ShapebatcherHelpers.Draw(shapeBatcher, fly.Hitbox);
+            shapeBatcher.Draw(fly.Hitbox);
         }
 
 

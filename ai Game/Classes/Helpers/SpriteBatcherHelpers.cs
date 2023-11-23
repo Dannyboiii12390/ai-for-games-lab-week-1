@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ai_Game.Helpers
+namespace ai_Game.Classes.Helpers
 {
     internal class SpriteBatcherHelpers
     {
