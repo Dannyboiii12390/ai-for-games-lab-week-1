@@ -7,7 +7,7 @@ namespace ai_Game.Classes.Utilities
     internal static class Utilities
     {
         /// <summary>
-        /// pPos is location of still object we are colliding with.
+        /// pPdwith.
         /// 
         /// pDirection is the direction the moveable object will do in.
         /// 
@@ -21,8 +21,9 @@ namespace ai_Game.Classes.Utilities
         /// </returns>
         public static Vector2 ManagePosition(Vector2 pPos, Vector2 pDirection, Shape pShape, float pSpeed)
         {
-            if (!pShape.isInside(pPos))
-            {
+            bool inside = !pShape.isInside(pPos);
+            if (inside)
+           {
                 Vector2 v = pDirection * pSpeed;
 
                 return v;

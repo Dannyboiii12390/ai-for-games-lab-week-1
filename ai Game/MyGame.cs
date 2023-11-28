@@ -113,35 +113,38 @@ namespace ai_for_games_lab_week_1
                 Vector2 up = new Vector2(0, 1);
                 Vector2 down = new Vector2(0, -1);
                 Vector2 right = new Vector2(1, 0);
-                Vector2 left = new Vector2(-1, 0);  
-
+                Vector2 left = new Vector2(-1, 0);
                 Dictionary<Keys, Vector2> moveDict = new Dictionary<Keys, Vector2>();
                 moveDict.Add(Keys.W, up);
                 moveDict.Add(Keys.S, down);
                 moveDict.Add(Keys.A, left);
                 moveDict.Add(Keys.D, right);
-
                 KeyboardState KeyDown = Keyboard.GetState();
                 Keys[] keys = KeyDown.GetPressedKeys();
 
+                Vector2 moveDir = Vector2.Zero;
+                foreach (Keys key in keys)
+                {
+                    try
+                    {
+                        moveDict.TryGetValue(key, out moveDir);
+                        _player.Move(_player.movespeed*moveDir);
+                    }catch (ArgumentNullException) { }
 
+                }
+                
+                
                 foreach (Polygon p in arena.Obstacles)
                 {
                     //change player position
-                    foreach (Keys key in keys)
-                    {
-                        try
-                        {
-                            Vector2 dir;
-                            moveDict.TryGetValue(key, out dir);
-                            _player.Move(ai_Game.Classes.Utilities.Utilities.ManagePosition(p._position, dir, _player.Hitbox, _player.movespeed));
-                        }
-                        catch (ArgumentNullException)
-                        {
 
-                        }
+
+                    bool NotInside = p.isInside(_player.Position);
+                    if (NotInside)
+                    {
+                        _player.Move(-(_player.movespeed * moveDir));
                     }
-                    
+
                 }
                 
 
