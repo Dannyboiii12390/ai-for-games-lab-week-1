@@ -15,6 +15,9 @@ using Microsoft.Xna.Framework.Input.Touch;
 using MonoGameLib.FileHandlers;
 using ai_Game.Classes.Helpers;
 using ai_Game.Classes.Utilities;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Http.Headers;
+using MonoGameLib.Utilities;
 
 //todo
 //todo add flocking steering behaviour
@@ -99,132 +102,153 @@ namespace ai_for_games_lab_week_1
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) || _boss.Health <= 0f || _player.Health <= 0f)
+            {
                 Exit();
-
-            Vector2 mousePosition = Mouse.GetState().Position.FlipY(_graphics.GraphicsDevice.Viewport.Height);
-
-            //change player position
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
-            {
-                _player.Move(new Vector2(0, _player.movespeed));
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
-                _player.Move(new Vector2(0, -_player.movespeed));
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                _player.Move(new Vector2(-_player.movespeed, 0));
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
-            {
-                _player.Move(new Vector2(_player.movespeed, 0));
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.E))
-            {
-                _boss.isInvincible = false;
-            }
-            
-            _boss.Hitbox.updateVel(_player.Hitbox._position);
-            _boss.Hitbox.seek();
-
-            //if space pressed shoot a bullet
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _player.gameTick >= _player.DealDamageInterval)
-            {
-                Bullet bull = new Bullet(_player.Hitbox._position, 1, 10, mousePosition, Color.OrangeRed);
-                _player.shoot(bull);
-                _player.ResetGameTick();
             }
             else
             {
-                _player.IncGameTick();
-            }
+                Vector2 mousePosition = Mouse.GetState().Position.FlipY(_graphics.GraphicsDevice.Viewport.Height);
 
-            //update location of each fly
-            foreach (Fly fly in swarm)
-            {
-                
-                fly.Hitbox.seek();
-            }
 
-            //update location of each bullet
-            foreach (Bullet bullet in _player._bullets)
-            {
-                bullet.seek();
-            }
+                Vector2 up = new Vector2(0, 1);
+                Vector2 down = new Vector2(0, -1);
+                Vector2 right = new Vector2(1, 0);
+                Vector2 left = new Vector2(-1, 0);  
 
-            //check if bullet has hit
-            for (int i = _player._bullets.Count - 1; i >= 0; i--)
-            {
-                if (_boss.Hitbox.isInside(_player._bullets[i].hitbox._position))
+                Dictionary<Keys, Vector2> moveDict = new Dictionary<Keys, Vector2>();
+                moveDict.Add(Keys.W, up);
+                moveDict.Add(Keys.S, down);
+                moveDict.Add(Keys.A, left);
+                moveDict.Add(Keys.D, right);
+
+                KeyboardState KeyDown = Keyboard.GetState();
+                Keys[] keys = KeyDown.GetPressedKeys();
+
+
+                foreach (Polygon p in arena.Obstacles)
                 {
-                    _player._bullets.Remove(_player._bullets[i]);
-                    _boss.TakeDamage(_player.Damage);
-
-                    if ( _boss.Health <= _boss.MaxHealth * 0.5)
+                    //change player position
+                    foreach (Keys key in keys)
                     {
-                        List<Fly> flies = _boss.CreateSwarm(10, _player.Hitbox._position);
-                        foreach (Fly fly in flies)
+                        try
                         {
-                            swarm.Add(fly);
+                            Vector2 dir;
+                            moveDict.TryGetValue(key, out dir);
+                            _player.Move(ai_Game.Classes.Utilities.Utilities.ManagePosition(p._position, dir, _player.Hitbox, _player.movespeed));
+                        }
+                        catch (ArgumentNullException)
+                        {
+
                         }
                     }
-                }
-                //check if bullet has hit obstacle
-                else if (arena.isInside(_player._bullets[i].hitbox._position))
-                {
-                    _player._bullets.Remove(_player._bullets[i]);
+                    
                 }
                 
-            }
-            //check if fly has hit obstacle
-            for(int i = swarm.Count - 1; i >= 0;i--)
-            {
-                if (arena.isInside(swarm[i].Hitbox._position))
-                {
-                    swarm.Remove(swarm[i]);
-                }
-            }
 
-            //remove a bullet if off screen
-            for(int i = _player._bullets.Count - 1; i >= 0;i--)
-            {
-                Bullet bullet = _player._bullets[i];
-                //check if bullet is less than screenwidth and more than 0
-                if (bullet.hitbox._position.X < 0 || bullet.hitbox._position.X > screenWidth)
+                _boss.Hitbox.updateVel(_player.Hitbox._position);
+                _boss.Hitbox.seek();
+
+                //if space pressed shoot a bullet
+                if (Keyboard.GetState().IsKeyDown(Keys.Space) && _player.gameTick >= _player.DealDamageInterval)
                 {
-                    _player._bullets.Remove(bullet);
+                    Bullet bull = new Bullet(_player.Hitbox._position, 1, 10, mousePosition, Color.OrangeRed);
+                    _player.shoot(bull);
+                    _player.ResetGameTick();
+                }
+                else
+                {
+                    _player.IncGameTick();
+                }
+
+                //update location of each fly
+                foreach (Fly fly in swarm)
+                {
+                
+                    fly.Hitbox.seek();
+                }
+
+                //update location of each bullet
+                foreach (Bullet bullet in _player._bullets)
+                {
+                    bullet.seek();
+                }
+
+                //check if bullet has hit
+                for (int i = _player._bullets.Count - 1; i >= 0; i--)
+                {
+                    if (_boss.Hitbox.isInside(_player._bullets[i].hitbox._position))
+                    {
+                        _player._bullets.Remove(_player._bullets[i]);
+                        _boss.TakeDamage(_player.Damage);
+
+                        if ( _boss.Health <= _boss.MaxHealth * 0.5)
+                        {
+                            List<Fly> flies = _boss.CreateSwarm(10, _player.Hitbox._position);
+                            foreach (Fly fly in flies)
+                            {
+                                swarm.Add(fly);
+                            }
+                        }
+                    }
+                    //check if bullet has hit obstacle
+                    else if (arena.isInside(_player._bullets[i].hitbox._position))
+                    {
+                        _player._bullets.Remove(_player._bullets[i]);
+                    }
+                
+                }
+                //check if fly has hit obstacle
+                for(int i = swarm.Count - 1; i >= 0;i--)
+                {
+                    if (arena.isInside(swarm[i].Hitbox._position))
+                    {
+                        swarm.Remove(swarm[i]);
+                    }
+                }
+
+                //remove a bullet if off screen
+                for(int i = _player._bullets.Count - 1; i >= 0;i--)
+                {
+                    Bullet bullet = _player._bullets[i];
+                    //check if bullet is less than screenwidth and more than 0
+                    if (bullet.hitbox._position.X < 0 || bullet.hitbox._position.X > screenWidth)
+                    {
+                        _player._bullets.Remove(bullet);
 
                     
-                }
-                //check if bullet is less than screenheight and more than 0
-                if (bullet.hitbox._position.Y < 0 || bullet._position.Y > screenHeight)
-                {
-                    _player._bullets.Remove(bullet);
+                    }
+                    //check if bullet is less than screenheight and more than 0
+                    if (bullet.hitbox._position.Y < 0 || bullet._position.Y > screenHeight)
+                    {
+                        _player._bullets.Remove(bullet);
 
                     
+                    }
                 }
-            }
 
-            //check if boss is in melee range to swing
-            if(_boss.Hitbox.isInside(_player.Hitbox._position) && _boss.gameTick >= _boss.DealDamageInterval)
-            {
-                _player.TakeDamage(_boss.Damage);
-                _boss.ResetGameTick();
-            }
-            else
-            {
-                _boss.IncGameTick();
-            }
+                //check if boss is in melee range to swing
+                if(_boss.Hitbox.isInside(_player.Hitbox._position) && _boss.gameTick >= _boss.DealDamageInterval)
+                {
+                    _player.TakeDamage(_boss.Damage);
+                    _boss.ResetGameTick();
+                }
+                else
+                {
+                    _boss.IncGameTick();
+                }
 
-            // todo check no object is colliding with arena
+                // todo check no object is colliding with arena
 
             
 
-            //update boss health bar
-            _boss.healthBar.update(_boss.GetHealthAsDecimal());
-            //update player health bar
-            _player.healthBar.update(_player.GetHealthAsDecimal());
+                //update boss health bar
+                _boss.healthBar.update(_boss.GetHealthAsDecimal());
+                //update player health bar
+                _player.healthBar.update(_player.GetHealthAsDecimal());
+            }
+                
+
+            
 
             //Test
                                     

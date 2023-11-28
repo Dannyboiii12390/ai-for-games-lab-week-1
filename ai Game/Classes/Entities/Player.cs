@@ -15,7 +15,7 @@ namespace MonoGameLib.Entities
     {
         public override Circle Hitbox { get; protected set; }
         public List<Bullet> _bullets { get; protected set; } = new List<Bullet>();
-        public float movespeed { get; protected set; } = 1.25f;
+        public float movespeed { get; protected set; } = .2f;
 
         
 

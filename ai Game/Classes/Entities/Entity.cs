@@ -1,16 +1,20 @@
-﻿using MonoGameLib.Items;
+﻿using Microsoft.Xna.Framework;
+using MonoGameLib.Items;
 using MonoGameLib.Shapes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MonoGameLib
 {
     public abstract class Entity
-    {        
+    {   
+
+        public Vector2 Position { get { return Hitbox._position; } }
         public float Health { get; protected set; }
         public float MaxHealth { get; protected set; }
         public float Damage { get; protected set; }
