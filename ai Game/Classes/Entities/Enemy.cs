@@ -32,7 +32,7 @@ namespace MonoGameLib.Entities
             List<Fly> swarm = new List<Fly>();
             for(int i = 0; i < Amount; i++)
             {
-                Fly fly = new Fly(new Circle(new Microsoft.Xna.Framework.Vector2 (Hitbox._position.X+i, Hitbox._position.Y*1.1f), 1, Microsoft.Xna.Framework.Color.Yellow), pTarget);
+                Fly fly = new Fly(new Circle(new Microsoft.Xna.Framework.Vector2 (Hitbox._position.X+i, Hitbox._position.Y*1.1f), 1, Microsoft.Xna.Framework.Color.Yellow));
                 swarm.Add(fly);
             }
             return swarm;

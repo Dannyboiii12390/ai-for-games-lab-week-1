@@ -18,12 +18,14 @@ using ai_Game.Classes.Utilities;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Http.Headers;
 using MonoGameLib.Utilities;
+using ai_Game.Classes.Entities;
 
 //todo
 //todo add flocking steering behaviour
 //todo add pathfinding algorithm
 //todo add blocks 
 //read level info from file
+//todo remove flies when offscreen
 
 
 
@@ -42,7 +44,7 @@ namespace ai_for_games_lab_week_1
         //Entities
         private Player _player;
         private Enemy _boss;
-        private List<Fly> swarm = new List<Fly>();
+        private Swarm swarm;
 
         //shapes
         Arena arena = new Arena();
@@ -75,6 +77,12 @@ namespace ai_for_games_lab_week_1
             
             _player.AddHealthBar(playerHealthBar);
             _boss.AddHealthBar(BossHealthBar);
+
+            swarm = new Swarm();
+            for (int i = 0; i < 50; i++)
+            {
+                swarm.AddFly(new Fly(new Circle(new Microsoft.Xna.Framework.Vector2(_boss.Hitbox._position.X + i*3, _boss.Hitbox._position.Y * 1.1f), 1, Microsoft.Xna.Framework.Color.Yellow)));
+            }
 
             _shapeBatcher = new ShapeBatcher(this);
 
@@ -153,7 +161,7 @@ namespace ai_for_games_lab_week_1
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && _player.gameTick >= _player.DealDamageInterval)
                 {
                     Bullet bull = new Bullet(_player.Hitbox._position, 1, 10, mousePosition, Color.OrangeRed);
-                    bull.updateVel(_boss.Position);
+                    bull.Hitbox.updateVel(mousePosition);
                     _player.shoot(bull);
                     _player.ResetGameTick();
                 }
@@ -163,22 +171,21 @@ namespace ai_for_games_lab_week_1
                 }
 
                 //update location of each fly
-                foreach (Fly fly in swarm)
+                foreach (Fly fly in swarm.agents)
                 {
-                    fly.Hitbox.updateVel(_player.Position, 1.5f);
-                    fly.Hitbox.changePosition(fly.Hitbox.Evade());
+                    swarm.Flock(fly, _player.Position);
                 }
                 
                 //update location of each bullet
                 foreach (Bullet bullet in _player._bullets)
                 {
-                    bullet.hitbox.changePosition(bullet.Seek());
+                    bullet.Hitbox.changePosition(bullet.Hitbox.Seek());
                 }
 
                 //check if bullet has hit
                 for (int i = _player._bullets.Count - 1; i >= 0; i--)
                 {
-                    if (_boss.Hitbox.isInside(_player._bullets[i].hitbox._position))
+                    if (_boss.Hitbox.isInside(_player._bullets[i].Hitbox._position))
                     {
                         _player._bullets.Remove(_player._bullets[i]);
                         _boss.TakeDamage(_player.Damage);
@@ -186,25 +193,22 @@ namespace ai_for_games_lab_week_1
                         if ( _boss.Health <= _boss.MaxHealth * 0.5)
                         {
                             List<Fly> flies = _boss.CreateSwarm(10, _player.Hitbox._position);
-                            foreach (Fly fly in flies)
-                            {
-                                swarm.Add(fly);
-                            }
+                            swarm.AddFlies(flies);
                         }
                     }
                     //check if bullet has hit obstacle
-                    else if (arena.isInside(_player._bullets[i].hitbox._position))
+                    else if (arena.isInside(_player._bullets[i].Hitbox._position))
                     {
                         _player._bullets.Remove(_player._bullets[i]);
                     }
                 
                 }
                 //check if fly has hit obstacle
-                for(int i = swarm.Count - 1; i >= 0;i--)
+                for(int i = swarm.agents.Count - 1; i >= 0;i--)
                 {
-                    if (arena.isInside(swarm[i].Hitbox._position))
+                    if (arena.isInside(swarm.agents[i].Hitbox._position))
                     {
-                        swarm.Remove(swarm[i]);
+                        swarm.agents.Remove(swarm.agents[i]);
                     }
                 }
 
@@ -213,14 +217,14 @@ namespace ai_for_games_lab_week_1
                 {
                     Bullet bullet = _player._bullets[i];
                     //check if bullet is less than screenwidth and more than 0
-                    if (bullet.hitbox._position.X < 0 || bullet.hitbox._position.X > screenWidth)
+                    if (bullet.Hitbox._position.X < 0 || bullet.Hitbox._position.X > screenWidth)
                     {
                         _player._bullets.Remove(bullet);
 
                     
                     }
                     //check if bullet is less than screenheight and more than 0
-                    if (bullet.hitbox._position.Y < 0 || bullet._position.Y > screenHeight)
+                    if (bullet.Hitbox._position.Y < 0 || bullet.Position.Y > screenHeight)
                     {
                         _player._bullets.Remove(bullet);
 
@@ -239,18 +243,11 @@ namespace ai_for_games_lab_week_1
                     _boss.IncGameTick();
                 }
 
-                // todo check no object is colliding with arena
-
-            
-
                 //update boss health bar
                 _boss.healthBar.update(_boss.GetHealthAsDecimal());
                 //update player health bar
                 _player.healthBar.update(_player.GetHealthAsDecimal());
             }
-                
-
-            
 
             //Test
                                     
@@ -271,7 +268,7 @@ namespace ai_for_games_lab_week_1
             {
                 _shapeBatcher.Draw(bullet);
             }
-            foreach(Fly fly in swarm)
+            foreach(Fly fly in swarm.agents)
             {
                 _shapeBatcher.Draw(fly);
             }
@@ -281,18 +278,25 @@ namespace ai_for_games_lab_week_1
             }
 
             //Test
+            foreach(Line line in swarm.forces)
+            {
+                _shapeBatcher.Draw(line);
+            }
+            
+
+
 
             _guiRenderer.BeginLayout(gameTime);
-            /*
+            
             ImGui.Begin("Flies");
     
-            foreach(Fly fly in swarm)
+            foreach(Fly fly in swarm.agents)
             {
                 ImGui.Text($"Fly {fly.Hitbox._position.X} : {fly.Hitbox._position.Y}");
             }
 
             ImGui.End();
-            */
+            
             _guiRenderer.EndLayout();
 
             base.Draw(gameTime);

@@ -36,6 +36,10 @@ namespace MonoGameLib.Utilities
         {
             _velocity = v;
         }
+        public void changeCoefficientSpeed(float pSpeed)
+        {
+            coefficientOfSpeed = pSpeed;
+        }
 
         public virtual void updateVel(Vector2 pTarget)
         {

@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using MonoGameLib.Entities;
 using MonoGameLib.Items;
 using MonoGameLib.Shapes;
 using MonoGameLib.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,12 +16,28 @@ namespace ai_Game.Classes.Entities
     public class Swarm
     {
         public List<Fly> agents { get; private set; } = new List<Fly>();
-        public Vector2 Position { get; set; }
-        public Circle center { get; set; }
-        public float coefficientOfSpeed { get { return agents[0].Hitbox.coefficientOfSpeed; } }
-        public Swarm(Vector2 pPosition, List<Fly> pFlies) 
-        { 
+        public List<Line> forces { get; private set; } = new List<Line>();
         
+        public Swarm() 
+        { 
+            
+        }
+        public void AddFly(Fly fly)
+        {
+            agents.Add(fly);
+            forces.Add(new Line(Vector2.Zero, Vector2.Zero, Color.White, 1));
+            forces.Add(new Line(Vector2.Zero, Vector2.Zero, Color.White, 1));
+            forces.Add(new Line(Vector2.Zero, Vector2.Zero, Color.White, 1));
+            forces.Add(new Line(Vector2.Zero, Vector2.Zero, Color.White, 1));
+        }
+        public void AddFlies(List<Fly> flies)
+        {
+            
+            foreach (Fly fly in flies)
+            {
+                AddFly(fly);
+            }
+            
         }
         public virtual Vector2 Separation(Fly agent) // move away from those entities we are too close too
         {
@@ -123,6 +141,27 @@ namespace ai_Game.Classes.Entities
             var force = desired - agent.Hitbox._velocity;
             return force * agent.maxForce / agent.maxSpeed;
         }
+
+        public void FindNeighbourhoods()
+        {
+            //for(int i = 0; i < agents.Count; i++)
+            //{
+            //    agents[i].ClearNeighbourhood();
+            //}
+
+            //for(int i = 0; i < agents.Count; i++)
+            //{
+            //    for(int j = i; j < agents.Count; j++)
+            //    {
+            //        if (agents[i].IsInNeighbourhood(agents[j]))
+            //        {
+            //            agents[i].AddNeighbour(agents[j]);
+            //            agents[j].AddNeighbour(agents[i]);
+            //        }
+            //    }
+            //}
+        }
+
         public virtual void Flock(Fly agent, Vector2 pDestination)
         {
             List<Vector2> forceToApply = new List<Vector2>();
@@ -132,13 +171,25 @@ namespace ai_Game.Classes.Entities
                 agent = agents[i];
 
                 //Work out our behaviours
-                var seek = agent.Hitbox.Seek(pDestination);
+                //var seek = agent.Hitbox.Seek(pDestination);
+                //forces[i + 0] = new Line(agent.Position, seek, Color.Red, 10);
+
                 var separation = Separation(agent);
+                forces[i + 1] = new Line(agent.Position, separation, Color.Blue, 10);
+
                 var cohesion = Cohesion(agent);
-                var alignment = Alignment(agent);
+                forces[i + 2] = new Line(agent.Position, cohesion, Color.Green, 10);
+
+                //var alignment = Alignment(agent);
+                //forces[i + 3] = new Line(agent.Position, alignment, Color.Yellow, 10);
 
                 //Combine them to come up with a total force to apply, decreasing the effect of cohesion
-                forceToApply.Add(seek + separation + new Vector2(cohesion.X*0.1f,cohesion.Y*0.1f) + alignment);
+                Vector2 v = Vector2.Zero;
+                //v = v + seek;
+                v = v + separation;
+                v = v + cohesion * 0.1f;
+                //v = v + alignment;
+                forceToApply.Add(v);
             }
 
             //Move agents based on forces being applied (aka physics)
@@ -157,7 +208,7 @@ namespace ai_Game.Classes.Entities
                 }
 
                 //Move a bit
-                agent.Hitbox.changePosition(agent.Position + agent.Hitbox._velocity);
+                agent.Hitbox.changePosition(agent.Position + agent.Hitbox._velocity*agent.Hitbox.coefficientOfSpeed);
             }
         }
     }
