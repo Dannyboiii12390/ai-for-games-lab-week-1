@@ -49,7 +49,7 @@ namespace ai_for_games_lab_week_1
 
         //test variables
         private ImGuiRenderer _guiRenderer;
-        bool inside;
+        //bool inside;
 
         public MyGame()
         {
@@ -133,16 +133,16 @@ namespace ai_for_games_lab_week_1
 
                 }
                 
-                
+                //check for collisions (arena and player)
                 foreach (Polygon p in arena.Obstacles)
                 {
                     //change player position
 
 
-                    bool NotInside = p.isInside(_player.Position);
-                    if (NotInside)
+                    bool Inside = p.isInside(_player.Position);
+                    if (Inside)
                     {
-                        _player.Move(-(_player.movespeed * moveDir));
+                        _player.Move(-_player.movespeed * moveDir);
                     }
 
                 }
@@ -166,8 +166,8 @@ namespace ai_for_games_lab_week_1
                 //update location of each fly
                 foreach (Fly fly in swarm)
                 {
-                
-                    fly.Hitbox.seek();
+                    fly.Hitbox.updateVel(_player.Position, 1.5f);
+                    fly.Hitbox.Evade();
                 }
 
                 //update location of each bullet

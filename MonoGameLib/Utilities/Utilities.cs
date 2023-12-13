@@ -34,6 +34,34 @@ namespace MonoGameLib.Utilities
 
         }
 
+        /// <summary>
+        /// pAboutPoint point the vector is rotating around.
+        /// 
+        /// pAngle radians. anti clockwise
+        /// 
+        /// </summary>
+        /// <returns>
+        /// new Vector2 that has been rotated by the angle given
+        /// </returns>
+        public static Vector2 Rotate(this Vector2 v, Vector2 pAboutPoint, float pAngle)
+        {
+           //x' = x cos(angle) - y sin(angle)
+           //y' = x sin(angle) - y cos(angle)
+
+            Vector2 norm = v - pAboutPoint;
+            
+            float x = norm.X;
+            float y = norm.Y;
+
+            float rotx = x*(float)Math.Cos(pAngle) - y*(float)Math.Sin(pAngle);
+            float roty = x*(float)Math.Sin(pAngle) - y* (float)Math.Cos(pAngle);    
+
+            Vector2 normadj = new Vector2(rotx , roty);
+            normadj = normadj + pAboutPoint;
+
+            return normadj;
+        }
+
 
     }
 }
