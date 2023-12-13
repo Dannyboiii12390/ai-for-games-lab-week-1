@@ -147,14 +147,13 @@ namespace ai_for_games_lab_week_1
 
                 }
                 
-
-                _boss.Hitbox.updateVel(_player.Hitbox._position);
-                _boss.Hitbox.seek();
+                _boss.Hitbox.changePosition(_boss.Hitbox.Seek(_player.Hitbox._position));
 
                 //if space pressed shoot a bullet
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && _player.gameTick >= _player.DealDamageInterval)
                 {
                     Bullet bull = new Bullet(_player.Hitbox._position, 1, 10, mousePosition, Color.OrangeRed);
+                    bull.updateVel(_boss.Position);
                     _player.shoot(bull);
                     _player.ResetGameTick();
                 }
@@ -167,13 +166,13 @@ namespace ai_for_games_lab_week_1
                 foreach (Fly fly in swarm)
                 {
                     fly.Hitbox.updateVel(_player.Position, 1.5f);
-                    fly.Hitbox.Evade();
+                    fly.Hitbox.changePosition(fly.Hitbox.Evade());
                 }
-
+                
                 //update location of each bullet
                 foreach (Bullet bullet in _player._bullets)
                 {
-                    bullet.seek();
+                    bullet.hitbox.changePosition(bullet.Seek());
                 }
 
                 //check if bullet has hit

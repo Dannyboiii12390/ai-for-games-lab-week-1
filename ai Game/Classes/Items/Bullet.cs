@@ -44,11 +44,6 @@ namespace MonoGameLib.Items
             return hitbox.isInside(pPosition);
         }
 
-        public override void seek()
-        {
-            
-            hitbox.changePosition(hitbox._position - _velocity);
-
-        }
+        
     }
 }
