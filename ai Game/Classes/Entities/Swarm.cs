@@ -1,8 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
+
 using MonoGameLib.Entities;
 using MonoGameLib.Shapes;
+using Microsoft.Xna.Framework.Content;
+using MonoGameLib.Entities;
+using MonoGameLib.Items;
+using MonoGameLib.Shapes;
+using MonoGameLib.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +18,7 @@ namespace ai_Game.Classes.Entities
 {
     public class Swarm
     {
+
         public List<Fly> flies { get; private set; } = new List<Fly>();
         public List<Circle> Hitboxes { get { return GetHitboxes(); } }
 
@@ -49,5 +57,7 @@ namespace ai_Game.Classes.Entities
             }
             return hitboxes;
         }
+        
+        
     }
 }

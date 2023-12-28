@@ -8,47 +8,28 @@ using MonoGameLib.Shapes;
 
 namespace MonoGameLib.Items
 {
-    public class Bullet : Shape
+    public class Bullet
     {
-        public Circle hitbox { get; private set; }
+        public Circle Hitbox { get; private set; }
         public float Damage { get; private set; }
+        public Vector2 Position { get { return Hitbox._position; } }
         
 
 
-        public Bullet(Vector2 pPosition, int size, float pDamage, Vector2 pTarget ,Color pColour) : base(pPosition, pColour)
+        public Bullet(Vector2 pPosition, int size, float pDamage, Vector2 pTarget ,Color pColour)
         {
-            hitbox = new Circle(pPosition, size, pColour);
+            Hitbox = new Circle(pPosition, size, pColour);
             Damage = pDamage;
-            coefficientOfSpeed = 2f;
-            updateVel(pTarget);
-
-        }
-
-        public override void updateVel(Vector2 pTarget)
-        {
-            //difference
-            Vector2 v = _position - pTarget;
-
-            //normalise
-            v = Vector2.Normalize(v);
-
-            //multiply by length between
-
-
-            _velocity = v * coefficientOfSpeed;
-
-        }
-
-        public override bool isInside(Vector2 pPosition)
-        {
-            return hitbox.isInside(pPosition);
-        }
-
-        public override void seek()
-        {
+            Hitbox.changeCoefficientSpeed(0.01f);
             
-            hitbox.changePosition(hitbox._position - _velocity);
 
         }
+
+        public bool isInside(Vector2 pPosition)
+        {
+            return Hitbox.isInside(pPosition);
+        }
+
+        
     }
 }

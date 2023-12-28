@@ -34,8 +34,10 @@ namespace MonoGameLib.Entities
             Swarm s = new Swarm();
             for(int i = 0; i < Amount; i++)
             {
+
                 Fly fly = new Fly(new Circle(new Vector2 (Hitbox._position.X+i, Hitbox._position.Y*1.1f), 1, Microsoft.Xna.Framework.Color.Yellow), pTarget);
                 fly.Hitbox.coefficientOfSpeed = 0.02f;
+
                 swarm.Add(fly);
             }
 

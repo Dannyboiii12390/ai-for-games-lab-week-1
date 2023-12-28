@@ -38,9 +38,6 @@ namespace ai_Game.Classes.Helpers
                 case Polygon polygon:
                     shapeBatcher.HelperDrawPolygon(shape as Polygon);
                     break;
-                case Bullet bullet:
-                    shapeBatcher.HelperDraw(bullet.hitbox);
-                    break;
                 default:
                     break;
             }
@@ -98,6 +95,10 @@ namespace ai_Game.Classes.Helpers
         public static void Draw(this ShapeBatcher shapeBatcher, Fly fly)
         {
             shapeBatcher.Draw(fly.Hitbox);
+        }
+        public static void Draw(this ShapeBatcher shapeBatcher, Bullet bull)
+        {
+            shapeBatcher.Draw(bull.Hitbox);
         }
 
 
